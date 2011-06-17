@@ -1,0 +1,59 @@
+<!-- 
+William Dye
+902606082
+Ant lab build file 
+-->
+
+<project name="M4" default="all" basedir=".">
+	<target name="init" description="Initialize properties for build.">
+		<property name="src" location="./src/edu/gatech/oad/antlab" />
+		<property name="build" location="./build" />
+		<property name="doc" location="./apidoc" />
+		<property name="lib" location="./lib" />
+		<property name="jar.name" value="AntLabRun.jar" />
+	</target>
+	<target name="prepare" depends="init" description="Make directories needed for build.">
+		<mkdir dir="${build}" />
+		<mkdir dir="${doc}" />
+		<mkdir dir="${doc}/javadoc" />
+	</target>
+	<target name="compile" depends="prepare" description="Compile source files into bytecode.">
+		<javac destdir="${build}">
+			<src path="${src}/person" />
+			<src path="${src}/pkg1" />
+			<src path="${src}/pkg2" />
+			<classpath location="${lib}/resources.jar" />
+		</javac>
+	</target>
+	<target name="javadoc" depends="prepare" description="Generate documentation for the project.">
+		<javadoc sourcepath="${src}" access="public" destdir="${doc}/javadoc" packagenames="edu.gatech.oad.antlab">
+			<fileset dir="${src}">
+				<include name="**/*.java" />
+			</fileset>
+		</javadoc>
+	</target>
+	<target name="jar" depends="compile" description="Package the project into a Java archive (JAR) file.">
+		<jar destfile="${jar.name}" includes="${build}/**/*.class">
+			<manifest>
+				<attribute name="Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain" />
+				<attribute name="Class-Path" value="${lib}/resources.jar" />
+			</manifest>
+		</jar>
+	</target>
+	<target name="run" depends="jar" description="Run the project as an executable JAR file.">
+		<java jar="AntLabRun.jar" fork="true">
+			<classpath>
+				<pathelement location="${lib}/resources.jar" />
+				<pathelement location="java.class.path" />
+			</classpath>
+		</java>
+	</target>
+	<target name="all" depends="run" description="Compile, generate documentation, create JAR, and run the project.">
+		<antcall target="javadoc" />
+	</target>
+	<target name="clean" depends="init" description="Remove files and directories created when the project was compiled.">
+		<delete dir="${build}" />
+		<delete dir="${doc}" />
+		<delete file="${jar.name}" />
+	</target>
+</project>
