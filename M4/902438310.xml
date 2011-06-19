@@ -1,0 +1,62 @@
+<!-- 
+Robert Kernan
+rkernan3
+902438310
+
+M4 Lab 1 Ant Build File
+-->
+
+<project name="M4" default="all" basedir=".">
+    <target name="init" description="Set up all properties">
+        <property name="src.dir" location="./src/edu/gatech/oad/antlab"/>
+    	<property name="build.dir" location="./build"/>
+    	<property name="apidoc.dir" location="./apidoc"/>
+    	<property name="lib.dir" location="./lib"/>
+    	<property name="proj.name" value="AntLabRun"/>
+    </target>
+	<target name="prepare" depends="init" description="Make all the required directories">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${apidoc.dir}"/>
+	</target>
+	<target name="compile" depends="prepare" description="Compile all java classes in 'src'">
+		<javac destdir="${build.dir}">
+			<src path="${src.dir}"/>
+			<classpath>
+			    <pathelement path="${lib.dir}/*.jar"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="javadoc" depends="prepare" description="Generate javadoc for all classes in 'src'">
+		<javadoc sourcepath="${src.dir}" destdir="${apidoc.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java"/>
+			</fileset>
+			<classpath>
+				<pathelement path="${lib.dir}/resources.jar"/>
+			</classpath>
+		</javadoc>
+	</target>
+	<target name="jar" depends="compile" description="Package all compiled classes into a JAR.">
+		<jar destfile="${proj.name}.jar" include="${build.dir}/**/*.class">
+			<manifest>
+    			<attribute name="Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain"/>
+    			<attribute name="Class-Path" value="${lib.dir}/*.jar"/>
+			</manifest>
+		</jar>
+	</target>
+	<target name="run" depends="jar" description="Executes the JAR">
+		<java jar="${proj.name}.jar" fork="true">
+			<classpath>
+				<pathelement location="${lib.dir}/*.jar"/>
+				<pathelement location="java.class.path"/>
+			</classpath>
+		</java>
+	</target>
+	<target name="all" depends="run,javadoc" description="Run all tasks excluding 'clean'">
+	</target>
+	<target name="clean" depends="init" description="Remove compiled classes, JARs, javadoc">
+		<delete dir="${build.dir}"/>
+		<delete dir="${apidoc.dir}"/>
+		<delete file="${proj.name}.jar"/>
+	</target>
+</project>
