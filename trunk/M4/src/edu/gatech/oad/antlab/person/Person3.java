@@ -42,7 +42,9 @@ public class Person3 {
 	 * @return the reversed string
 	 */
 	private String calc(String input) {
-	  //Person 3 put your implementation here
-	  return null;
+		String output = new String();
+	    //Person 3 put your implementation here
+		String output = new StringBuffer(input).reverse().toString();
+		return output;
 	}
 }
