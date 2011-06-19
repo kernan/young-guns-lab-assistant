@@ -30,23 +30,20 @@ Ant lab build file
 			<fileset dir="${src}">
 				<include name="**/*.java" />
 			</fileset>
+			<classpath location="${lib}/resources.jar" />
 		</javadoc>
 	</target>
 	<target name="jar" depends="compile" description="Package the project into a Java archive (JAR) file.">
-		<jar destfile="${jar.name}" includes="${build}/**/*.class">
+		<jar destfile="${jar.name}" basedir="${build}">
+			<include name="edu/gatech/oad/antlab/**/*.class" />
 			<manifest>
 				<attribute name="Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain" />
-				<attribute name="Class-Path" value="${lib}/resources.jar" />
+				<attribute name="Class-Path" value="./lib/resources.jar" />
 			</manifest>
 		</jar>
 	</target>
 	<target name="run" depends="jar" description="Run the project as an executable JAR file.">
-		<java jar="AntLabRun.jar" fork="true">
-			<classpath>
-				<pathelement location="${lib}/resources.jar" />
-				<pathelement location="java.class.path" />
-			</classpath>
-		</java>
+		<java jar="${jar.name}" fork="true" />
 	</target>
 	<target name="all" depends="run" description="Compile, generate documentation, create JAR, and run the project.">
 		<antcall target="javadoc" />
