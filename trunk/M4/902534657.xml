@@ -32,13 +32,14 @@
         </javadoc>
 
     </target>
-
-    <target name="jar" depends="compile" description="Package classes">
+	
+	
+    <target name="jar" depends="javadoc" description="Package classes">
         <jar destfile="${jar}" basedir="${build}">
             <include name="edu/gatech/oad/antlab/**/*.class" />
             <manifest>
                 <attribute name="Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain" />
-                <attribute name="Class-Path" value="${lib}/resources.jar" />
+                <attribute name="Class-Path" value="./lib/resources.jar" />
             </manifest>
             
         </jar>
@@ -52,7 +53,7 @@
 				<antcall target="run" />
     </target>
     
-    <target name="clean" description="Remove everything that wass created.">
+    <target name="clean" depends="init" description="Remove everything that was created.">
 		<delete dir="${build}" />
 		<delete dir="${jdoc}" />
 		<delete file="${jar}" />
