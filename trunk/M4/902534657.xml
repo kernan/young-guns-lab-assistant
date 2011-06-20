@@ -1,0 +1,68 @@
+<!--Kyle Petrovich 902534657 ANT Buildfile -->
+
+<project name="M4" default="all" basedir=".">
+    <target name="init" description="Set up properties">
+        <property name="src" location="./src/edu/gatech/oad/antlab" />
+        <property name="build" location="./build" />
+        <property name="jdoc" location="./apidoc" />
+        <property name="lib" location="./lib" />
+        <property name="jar" location="AntLabRun.jar" />    
+    </target>
+
+    <target name="prepare" depends="init" description="Create directories">
+        <mkdir dir="${build}" />
+        <mkdir dir="${jdoc}" />    
+    </target>
+    
+    <target name="compile" depends="prepare" description="Compile it.">
+        <javac destdir="${build}">
+            <src path="${src}/person" />
+            <src path="${src}/pkg2" />
+            <src path="${src}/pkg1" />            
+            <classpath>
+                <pathelement path="{lib}/*.jar" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="javadoc" depends="compile" description="Javadoc it.">
+        <javadoc sourcepath="${src}" access="public" destdir="${jdoc}">
+            <fileset dir="${src}">
+                <include name="**/*.java" />
+            </fileset>
+            <classpath location="${lib}/*.jar" />
+        </javadoc>
+
+    </target>
+
+    <target name="jar" depends="javadoc" description="Package classes">
+        <jar destfile="${jar}">
+            <include name="{src}/**/*.class" />
+            <manifest>
+                <attribute name="Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain" />
+                <attribute name="Class-Path" value="${lib}/resources.jar" />
+            </manifest>
+            
+        </jar>
+    </target>
+    
+    <target name="run" depends="jar" description="Run the program.">
+        <java jar="${jar}" fork="true" />
+    </target>
+    
+    <target name="all" description="Compile, generate documentation, create JAR, and run the project.">
+		<antcall target="init" />
+                <antcall target="prepare" />
+                <antcall target="compile" />
+                <antcall target="javadoc" />
+                <antcall target="jar" />
+                <antcall target="run" />
+                
+    </target>
+    
+    <target name="clean" description="Remove everything that was created.">
+		<delete dir="${build}" />
+		<delete dir="${jdoc}" />
+		<delete file="${jar}" />
+    </target>
+</project>
