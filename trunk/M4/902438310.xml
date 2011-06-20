@@ -21,12 +21,12 @@ M4 Lab 1 Ant Build File
 		<javac destdir="${build.dir}">
 			<src path="${src.dir}"/>
 			<classpath>
-			    <pathelement path="${lib.dir}/*.jar"/>
+			    <pathelement path="${lib.dir}/resources.jar"/>
 			</classpath>
 		</javac>
 	</target>
 	<target name="javadoc" depends="prepare" description="Generate javadoc for all classes in 'src'">
-		<javadoc sourcepath="${src.dir}" destdir="${apidoc.dir}">
+		<javadoc sourcepath="${src.dir}" destdir="${apidoc.dir}" packagenames="edu.gatech.oad.antlab">
 			<fileset dir="${src.dir}">
 				<include name="**/*.java"/>
 			</fileset>
@@ -36,20 +36,16 @@ M4 Lab 1 Ant Build File
 		</javadoc>
 	</target>
 	<target name="jar" depends="compile" description="Package all compiled classes into a JAR.">
-		<jar destfile="${proj.name}.jar" include="${build.dir}/**/*.class">
+		<jar destfile="${proj.name}.jar" basedir="${build.dir}">
+			<include name="edu/gatech/oad/antlab/**/*.class"/>
 			<manifest>
     			<attribute name="Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain"/>
-    			<attribute name="Class-Path" value="${lib.dir}/*.jar"/>
+    			<attribute name="Class-Path" value="./lib/resources.jar"/>
 			</manifest>
 		</jar>
 	</target>
 	<target name="run" depends="jar" description="Executes the JAR">
-		<java jar="${proj.name}.jar" fork="true">
-			<classpath>
-				<pathelement location="${lib.dir}/*.jar"/>
-				<pathelement location="java.class.path"/>
-			</classpath>
-		</java>
+		<java jar="${proj.name}.jar" fork="true"/>
 	</target>
 	<target name="all" depends="run,javadoc" description="Run all tasks excluding 'clean'">
 	</target>
