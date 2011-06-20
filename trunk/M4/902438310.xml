@@ -5,6 +5,7 @@ M4 Lab 1 Ant Build File
 -->
 
 <project name="M4" default="all" basedir=".">
+	
 	<!-- init -->
     <target name="init" description="set up all build variables">
     	<echo message="Setting up build property vars..."/>
@@ -13,30 +14,33 @@ M4 Lab 1 Ant Build File
     	<property name="build.dir" location="./build"/>
     	<property name="apidoc.dir" location="./apidoc"/>
     	<property name="lib.dir" location="./lib"/>
-    	<property name="proj.Name" value="AntLabRun"/>
-    	<path id="proj.Class-Path">
+    	<property name="jar.name" value="AntLabRun"/>
+    	<path id="proj.classpath">
     		<fileset dir="${lib.dir}">
     			<include name="*.jar"/>
 			</fileset>
 		</path>
     	<!--    manifest variables    -->
-    	<property name="jar.Include" value="edu/gatech/oad/antlab/**/*.class"/>
-    	<property name="jar.Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain"/>
+    	<property name="jar.include" value="edu/gatech/oad/antlab/**/*.class"/>
+    	<property name="jar.mainclass" value="edu.gatech.oad.antlab.pkg1.AntLabMain"/>
     </target>
+	
 	<!-- prepare -->
 	<target name="prepare" depends="init" description="create all the required directories">
 		<echo message="Creating required build and documentation directories..."/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${apidoc.dir}"/>
 	</target>
+	
 	<!-- compile -->
 	<target name="compile" depends="prepare" description="compile all java classes in src folder">
 		<echo message="Compiling all java classes in '${src.dir}'..."/>
 		<javac destdir="${build.dir}">
 			<src path="${src.dir}"/>
-			<classpath refid="proj.Class-Path"/>
+			<classpath refid="proj.classpath"/>
 		</javac>
 	</target>
+	
 	<!-- javadoc -->
 	<target name="javadoc" depends="prepare" description="generate javadoc for all classes in src folder">
 		<echo message="Generating javadoc for all classes in '${src.dir}'..."/>
@@ -44,18 +48,19 @@ M4 Lab 1 Ant Build File
 			<fileset dir="${src.dir}">
 				<include name="**/*.java"/>
 			</fileset>
-			<classpath refid="proj.Class-Path"/>
+			<classpath refid="proj.classpath"/>
 		</javadoc>
 	</target>
+	
 	<!-- jar -->
 	<target name="jar" depends="compile" description="package all compiled classes into a .jar">
-		<echo message="Packaging all compiled classes into '${proj.Name}.jar'..."/>
+		<echo message="Packaging all compiled classes into '${jar.name}.jar'..."/>
 		<echo message="Writing PATHs and version info to 'MANIFEST.MF'..."/>
-		<manifestclasspath property="manifest.Class-Path" jarfile="${proj.Name}">
-			<classpath refid="proj.Class-Path"/>
+		<manifestclasspath property="manifest.Class-Path" jarfile="${jar.name}">
+			<classpath refid="proj.classpath"/>
 		</manifestclasspath>
-		<jar destfile="${proj.Name}.jar" basedir="${build.dir}">
-			<include name="${jar.Include}"/>
+		<jar destfile="${jar.name}.jar" basedir="${build.dir}">
+			<include name="${jar.include}"/>
 			<!-- MANIFEST.MF -->
 			<manifest>
 				<section name="version info">
@@ -63,26 +68,29 @@ M4 Lab 1 Ant Build File
 					<attribute name="Implementation-Java" value="${java.vendor} ${java.version}"/>
 					<attribute name="Implementation-Build-OS" value="${os.name} ${os.arch} ${os.version}"/>
 				</section>
-    			<attribute name="Main-Class" value="${jar.Main-Class}"/>
+    			<attribute name="Main-Class" value="${jar.mainclass}"/>
     			<attribute name="Class-Path" value="${manifest.Class-Path}"/>
 			</manifest>
 		</jar>
 	</target>
+		
 	<!-- run -->
 	<target name="run" depends="jar" description="executes the .jar create in 'jar'">
-		<echo message="Executing '${proj.Name}.jar'..."/>
-		<java jar="${proj.Name}.jar" fork="true"/>
+		<echo message="Executing '${jar.name}.jar'..."/>
+		<java jar="${jar.name}.jar" fork="true"/>
 	</target>
+	
 	<!-- all (default) -->
 	<target name="all" description="Run all tasks excluding 'clean'">
 		<antcall target="javadoc"/>
 		<antcall target="run"/>
 	</target>
+	
 	<!-- clean -->
 	<target name="clean" depends="init" description="Remove compiled classes, created JARs, and javadoc">
 		<echo message="Removing all build files and javadoc..."/>
 		<delete dir="${build.dir}"/>
 		<delete dir="${apidoc.dir}"/>
-		<delete file="${proj.Name}.jar"/>
+		<delete file="${jar.name}.jar"/>
 	</target>
 </project>
