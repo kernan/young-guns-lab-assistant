@@ -1,57 +1,88 @@
-<!-- 
+<!--
 Robert Kernan
 902438310
-
 M4 Lab 1 Ant Build File
 -->
 
 <project name="M4" default="all" basedir=".">
-    <target name="init" description="Set up all properties">
+	<!-- init -->
+    <target name="init" description="set up all build variables">
+    	<echo message="Setting up build property vars..."/>
+    	<!--    locations   -->
         <property name="src.dir" location="./src/edu/gatech/oad/antlab"/>
     	<property name="build.dir" location="./build"/>
     	<property name="apidoc.dir" location="./apidoc"/>
     	<property name="lib.dir" location="./lib"/>
-    	<property name="proj.name" value="AntLabRun"/>
+    	<property name="proj.Name" value="AntLabRun"/>
+    	<path id="proj.Class-Path">
+    		<fileset dir="${lib.dir}">
+    			<include name="*.jar"/>
+			</fileset>
+		</path>
+    	<!--    manifest variables    -->
+    	<property name="jar.Include" value="edu/gatech/oad/antlab/**/*.class"/>
+    	<property name="jar.Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain"/>
     </target>
-	<target name="prepare" depends="init" description="Make all the required directories">
+	<!-- prepare -->
+	<target name="prepare" depends="init" description="create all the required directories">
+		<echo message="Creating required build and documentation directories..."/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${apidoc.dir}"/>
 	</target>
-	<target name="compile" depends="prepare" description="Compile all java classes in 'src'">
+	<!-- compile -->
+	<target name="compile" depends="prepare" description="compile all java classes in src folder">
+		<echo message="Compiling all java classes in '${src.dir}'..."/>
 		<javac destdir="${build.dir}">
 			<src path="${src.dir}"/>
-			<classpath>
-			    <pathelement path="${lib.dir}/resources.jar"/>
-			</classpath>
+			<classpath refid="proj.Class-Path"/>
 		</javac>
 	</target>
-	<target name="javadoc" depends="prepare" description="Generate javadoc for all classes in 'src'">
+	<!-- javadoc -->
+	<target name="javadoc" depends="prepare" description="generate javadoc for all classes in src folder">
+		<echo message="Generating javadoc for all classes in '${src.dir}'..."/>
 		<javadoc sourcepath="${src.dir}" destdir="${apidoc.dir}" packagenames="edu.gatech.oad.antlab">
 			<fileset dir="${src.dir}">
 				<include name="**/*.java"/>
 			</fileset>
-			<classpath>
-				<pathelement path="${lib.dir}/resources.jar"/>
-			</classpath>
+			<classpath refid="proj.Class-Path"/>
 		</javadoc>
 	</target>
-	<target name="jar" depends="compile" description="Package all compiled classes into a JAR.">
-		<jar destfile="${proj.name}.jar" basedir="${build.dir}">
-			<include name="edu/gatech/oad/antlab/**/*.class"/>
+	<!-- jar -->
+	<target name="jar" depends="compile" description="package all compiled classes into a .jar">
+		<echo message="Packaging all compiled classes into '${proj.Name}.jar'..."/>
+		<echo message="Writing PATHs and version info to 'MANIFEST.MF'..."/>
+		<manifestclasspath property="manifest.Class-Path" jarfile="${proj.Name}">
+			<classpath refid="proj.Class-Path"/>
+		</manifestclasspath>
+		<jar destfile="${proj.Name}.jar" basedir="${build.dir}">
+			<include name="${jar.Include}"/>
+			<!-- MANIFEST.MF -->
 			<manifest>
-    			<attribute name="Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain"/>
-    			<attribute name="Class-Path" value="./lib/resources.jar"/>
+				<section name="version info">
+					<attribute name="Built-By" value="${user.name} on ${time.date}"/>
+					<attribute name="Implementation-Java" value="${java.vendor} ${java.version}"/>
+					<attribute name="Implementation-Build-OS" value="${os.name} ${os.arch} ${os.version}"/>
+				</section>
+    			<attribute name="Main-Class" value="${jar.Main-Class}"/>
+    			<attribute name="Class-Path" value="${manifest.Class-Path}"/>
 			</manifest>
 		</jar>
 	</target>
-	<target name="run" depends="jar" description="Executes the JAR">
-		<java jar="${proj.name}.jar" fork="true"/>
+	<!-- run -->
+	<target name="run" depends="jar" description="executes the .jar create in 'jar'">
+		<echo message="Executing '${proj.Name}.jar'..."/>
+		<java jar="${proj.Name}.jar" fork="true"/>
 	</target>
-	<target name="all" depends="run,javadoc" description="Run all tasks excluding 'clean'">
+	<!-- all (default) -->
+	<target name="all" description="Run all tasks excluding 'clean'">
+		<antcall target="javadoc"/>
+		<antcall target="run"/>
 	</target>
-	<target name="clean" depends="init" description="Remove compiled classes, JARs, javadoc">
+	<!-- clean -->
+	<target name="clean" depends="init" description="Remove compiled classes, created JARs, and javadoc">
+		<echo message="Removing all build files and javadoc..."/>
 		<delete dir="${build.dir}"/>
 		<delete dir="${apidoc.dir}"/>
-		<delete file="${proj.name}.jar"/>
+		<delete file="${proj.Name}.jar"/>
 	</target>
 </project>
