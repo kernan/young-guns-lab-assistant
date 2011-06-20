@@ -44,7 +44,6 @@ public class Person3 {
 	private String calc(String input) {
 		String output = new String();
 	    //Person 3 put your implementation here
-		String output = new StringBuffer(input).reverse().toString();
-		return output;
+		return new StringBuffer(input).reverse().toString();
 	}
 }
