@@ -9,12 +9,13 @@ M4 Lab 1 Ant Build File
 	<!-- init -->
     <target name="init" description="set up all build variables">
     	<echo message="Setting up build property vars..."/>
+    	<!--    project name    -->
+    	<property name="jar.name" value="AntLabRun"/>
     	<!--    locations   -->
         <property name="src.dir" location="./src/edu/gatech/oad/antlab"/>
     	<property name="build.dir" location="./build"/>
     	<property name="apidoc.dir" location="./apidoc"/>
     	<property name="lib.dir" location="./lib"/>
-    	<property name="jar.name" value="AntLabRun"/>
     	<path id="proj.classpath">
     		<fileset dir="${lib.dir}">
     			<include name="*.jar"/>
@@ -23,6 +24,8 @@ M4 Lab 1 Ant Build File
     	<!--    manifest variables    -->
     	<property name="jar.include" value="edu/gatech/oad/antlab/**/*.class"/>
     	<property name="jar.mainclass" value="edu.gatech.oad.antlab.pkg1.AntLabMain"/>
+    	<!--    parameters    -->
+    	<property name="debug.address" value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"/>
     </target>
 	
 	<!-- prepare -->
@@ -35,8 +38,10 @@ M4 Lab 1 Ant Build File
 	<!-- compile -->
 	<target name="compile" depends="prepare" description="compile all java classes in src folder">
 		<echo message="Compiling all java classes in '${src.dir}'..."/>
-		<javac destdir="${build.dir}">
-			<src path="${src.dir}"/>
+		<javac srcdir="${src.dir}"
+			destdir="${build.dir}"
+			debug="true"
+			optimize="true">
 			<classpath refid="proj.classpath"/>
 		</javac>
 	</target>
@@ -44,7 +49,10 @@ M4 Lab 1 Ant Build File
 	<!-- javadoc -->
 	<target name="javadoc" depends="prepare" description="generate javadoc for all classes in src folder">
 		<echo message="Generating javadoc for all classes in '${src.dir}'..."/>
-		<javadoc sourcepath="${src.dir}" destdir="${apidoc.dir}" packagenames="edu.gatech.oad.antlab">
+		<javadoc
+			sourcepath="${src.dir}"
+			destdir="${apidoc.dir}"
+			packagenames="edu.gatech.oad.antlab">
 			<fileset dir="${src.dir}">
 				<include name="**/*.java"/>
 			</fileset>
@@ -56,20 +64,29 @@ M4 Lab 1 Ant Build File
 	<target name="jar" depends="compile" description="package all compiled classes into a .jar">
 		<echo message="Packaging all compiled classes into '${jar.name}.jar'..."/>
 		<echo message="Writing PATHs and version info to 'MANIFEST.MF'..."/>
-		<manifestclasspath property="manifest.Class-Path" jarfile="${jar.name}">
+		<manifestclasspath
+			property="manifest.Class-Path"
+			jarfile="${jar.name}">
 			<classpath refid="proj.classpath"/>
 		</manifestclasspath>
-		<jar destfile="${jar.name}.jar" basedir="${build.dir}">
+		<jar
+			destfile="${jar.name}.jar"
+			basedir="${build.dir}">
 			<include name="${jar.include}"/>
 			<!-- MANIFEST.MF -->
 			<manifest>
 				<section name="version info">
-					<attribute name="Built-By" value="${user.name} on ${time.date}"/>
-					<attribute name="Implementation-Java" value="${java.vendor} ${java.version}"/>
-					<attribute name="Implementation-Build-OS" value="${os.name} ${os.arch} ${os.version}"/>
+					<attribute name="Built-By"
+						value="${user.name} on ${time.date}"/>
+					<attribute name="Implementation-Java"
+						value="${java.vendor} ${java.version}"/>
+					<attribute name="Implementation-Build-OS"
+						value="${os.name} ${os.arch} ${os.version}"/>
 				</section>
-    			<attribute name="Main-Class" value="${jar.mainclass}"/>
-    			<attribute name="Class-Path" value="${manifest.Class-Path}"/>
+    			<attribute name="Main-Class"
+    				value="${jar.mainclass}"/>
+    			<attribute name="Class-Path"
+    				value="${manifest.Class-Path}"/>
 			</manifest>
 		</jar>
 	</target>
@@ -77,7 +94,9 @@ M4 Lab 1 Ant Build File
 	<!-- run -->
 	<target name="run" depends="jar" description="executes the .jar create in 'jar'">
 		<echo message="Executing '${jar.name}.jar'..."/>
-		<java jar="${jar.name}.jar" fork="true"/>
+		<java jar="${jar.name}.jar"
+			fork="true"
+			failonerror="true"/>
 	</target>
 	
 	<!-- all (default) -->
