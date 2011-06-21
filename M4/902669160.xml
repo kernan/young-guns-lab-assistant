@@ -1,0 +1,80 @@
+<!--
+	Philip Smith
+	902669160
+	M4 Ant Build File
+ -->
+
+ <project name="M4" default="all" basedir=".">
+	<!-- Init -->
+	<target name="init" description="Set up properties for build.">
+		<echo message="Beginning init..."/>
+		<property name="src" location="./src/edu/gatech/oad/antlab" />
+		<property name="build" location="./build" />
+		<property name="doc" location="./apidoc" />
+		<property name="lib" location="./lib" />
+		<property name="jar" value="AntLabRun.jar" />
+	</target>
+	
+	<!-- Prepare -->
+	<target name="prepare" depends="init" description="Create required directories.">
+		<echo message="Beginning prepare..."/>
+		<mkdir dir="${build}" />
+		<mkdir dir="${doc}" />
+	</target>
+	
+	<!-- Compile -->
+	<target name="compile" depends="prepare" description="Compile java files to bytecode.">
+		<echo message="Beginning compile..."/>
+		<javac destdir="${build}">
+			<src path="${src}/person" />
+			<src path="${src}/pkg1" />
+			<src path="${src}/pkg2" />            
+			<classpath location="${lib}/resources.jar" />
+        </javac>
+	</target>
+	
+	<!-- Javadoc -->
+	<target name="javadoc" depends="prepare" description="Generate javadocs.">
+		<echo message="Beginning javadoc..."/>
+		<javadoc sourcepath="${src}" access="public" destdir="${doc}/javadoc" packagenames="edu.gatech.oad.antlab">
+			<fileset dir="${src}">
+				<include name="**/*.java" />
+			</fileset>
+			<classpath location="${lib}/resources.jar" />
+		</javadoc>
+	</target>
+	
+	<!-- Jar -->
+	<target name="jar" depends="compile" description="Package the code into a JAR.">
+		<echo message="Beginning jar..."/>
+		<jar destfile="${jar}" basedir="${build}">
+			<include name="edu/gatech/oad/antlab/**/*.class" />
+			<manifest>
+				<attribute name="Main-Class" value="edu.gatech.oad.antlab.pkg1.AntLabMain" />
+				<attribute name="Class-Path" value="./lib/resources.jar" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<!-- Run -->
+	<target name="run" depends="jar" description="Run the JAR.">
+		<echo message="Beginning run..."/>
+		<java jar="${jar}" fork="true" />
+	</target>
+	
+	<!-- All -->
+	<target name="all" depends="run" description="Run all tasks, except for clean.">
+		<echo message="Beginning all..."/>
+		<antcall target="javadoc" />
+		<antcall target="run"/>
+	</target>
+	
+	<!-- Clean -->
+	<target name="clean" depends="init" description="Remove all created files">
+		<echo message="Beginning clean..."/>
+		<delete dir="${build}"/>
+		<delete dir="${doc}"/>
+		<delete file="${jar}"/>
+		<echo message="Done!"/>
+	</target>
+ </project>
