@@ -12,7 +12,4 @@ class Course {
 		coursename column: 'coursename'
 	}
 
-	Set<Role> getAuthorities() {
-		UserRole.findAllByUser(this).collect { it.role } as Set
-	}
 }
