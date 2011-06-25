@@ -16,14 +16,32 @@ body {
     color: #333;
     font: 11px verdana, arial, helvetica, sans-serif;
 }
-#grailsLogo {
+
+#logo {
 	padding:20px;
 }
 
+#welcome {
+	display: block;
+	float: right;
+	padding: 10px;
+}
+
 a:link, a:visited, a:hover {
-    color: #666;
     font-weight: bold;
     text-decoration: none;
+}
+
+a:link {
+	color: #39a3ee;
+}
+
+a:visited {
+	color: #1f65c8;
+}
+
+a:hover {
+	text-decoration: underline;
 }
 
 h1 {
@@ -60,6 +78,88 @@ input:focus, select:focus, textarea:focus {
 .body {
     float: left;
     margin: 0 15px 10px 15px;
+}
+
+/* HEADER MENU */
+
+#menuContainer {
+	width: 100%;
+	background: #39a3ee;
+	float: left;
+	text-align: center;
+	position: relative;
+	margin-bottom: 20px;
+}
+
+#menu {
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0; 
+	width: 12em;
+	float: left;
+}
+
+#menu a, #menu h2 {
+	font-family: arial, helvetica, sans-serif;
+	font-weight: bold;
+	display: block;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #fff;
+	margin: 0;
+	padding: 2px 3px;
+}
+
+#menu h2 {
+	font-size: 14px;
+	color: #fff;
+	background: #39a3ee;
+}
+
+#menu h2:hover {
+	color: #39a3ee;
+	background: #efefef;
+}
+
+#menu a {
+	font-size: 11px;
+	color: #111;
+	background: #efefef;
+	text-decoration: none;
+}
+
+#menu a:hover {
+	color: #39a3ee;
+	background: #fff;
+	border: 1px solid #39a3ee;
+}
+
+#menu li {
+	position: relative;
+}
+
+#menu ul ul {
+	position: absolute;
+	z-index: 500;
+}
+
+#menu ul ul ul {
+	top: 0;
+	left: 100%;
+}
+
+div#menu ul ul, div#menu ul li:hover ul ul, div#menu ul ul li:hover ul ul {
+	display: none;
+}
+
+div#menu ul li:hover ul, div#menu ul ul li:hover ul, div#menu ul ul ul li:hover ul {
+	display: block;
 }
 
 /* NAVIGATION MENU */
@@ -270,4 +370,62 @@ th.desc a {
 .buttons input.save {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 28px;
+}
+
+/* LOGIN PAGE */
+
+#login {
+	padding-top: 40px;
+	text-align: center;
+	background-color: #eee;
+	height: 100%;
+	color: #fff;
+}
+
+#login .inner {
+	width: 260px;
+	margin: 40px auto;
+	text-align: left;
+	padding: 10px;
+	border: 2px solid #fff;
+	/*border-bottom: 1px dashed #499ede;*/
+	background-color: #39a3ee;
+}
+#login .inner .fheader {
+	padding: 4px;
+	margin: 3px 0px 3px 0;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#login .inner .cssform p {
+	clear: left;
+	margin: 5px 0;
+	padding: 5px 0 8px 0;
+	padding-left: 105px;
+	border-top: 1px dashed #fff;
+	margin-bottom: 10px;
+	height: 1%;
+}
+#login .inner .cssform input[type='text'] {
+	width: 120px;
+}
+
+#login .inner .cssform label {
+	font-weight: bold;
+	float: left;
+	margin-left: -105px;
+	width: 100px;
+}
+
+#login .inner .login_message {
+	color: red;
+}
+
+#login .inner .text_ {
+	width: 120px;
+}
+
+#login .inner .chk {
+	height: 12px;
 }

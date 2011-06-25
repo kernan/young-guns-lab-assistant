@@ -4,20 +4,24 @@ class User {
 
 	String username
 	String password
+	String name
 	boolean accountLocked
-	/* boolean enabled
+	boolean enabled
 	boolean accountExpired
-	boolean passwordExpired */
+	boolean passwordExpired
 
 	static constraints = {
-		username blank: false, unique: true
-		password blank: false, minSize: 6
+		username(blank: false, unique: true)
+		password(blank: false, minSize: 6)
+		name(blank: false)
 	}
 
 	static mapping = {
-		username column: 'username'
-		password column: '`password`'
-		accountLocked column: 'locked'
+		username column: "`username`"
+		password column: "`password`"
+		name column: "`name`"
+		enabled column: "`enabled`"
+		accountLocked column: "`locked`"
 	}
 
 	Set<Role> getAuthorities() {
