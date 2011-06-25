@@ -2,14 +2,14 @@ package edu.gatech.youngguns.labassistant
 
 class Course {
 
-	String coursename
+	String name
 
 	static constraints = {
-		coursename blank: false, unique: true
+		name blank: false, unique: true
 	}
 
 	static mapping = {
-		coursename column: 'coursename'
+		name column: 'coursename'
 	}
 
 }
