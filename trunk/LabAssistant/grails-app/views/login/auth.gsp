@@ -1,5 +1,6 @@
 <head>
 <meta name='layout' content='main' />
+<link rel='stylesheet' href='${resource(dir:"css", file:"login.css")}' />
 <title>Sign in | Lab Assistant</title>
 </head>
 

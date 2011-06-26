@@ -17,8 +17,14 @@ body {
     font: 11px verdana, arial, helvetica, sans-serif;
 }
 
+h2, p {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 2px;
+}
+
 #logo {
-	padding:20px;
+	padding:10px;
 }
 
 #welcome {
@@ -45,10 +51,10 @@ a:hover {
 }
 
 h1 {
-    color: #48802c;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 16px;
-    margin: .8em 0 .3em 0;
+    margin-left: 10px;
+	margin-bottom: 8px;
 }
 
 ul {
@@ -370,62 +376,4 @@ th.desc a {
 .buttons input.save {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 28px;
-}
-
-/* LOGIN PAGE */
-
-#login {
-	padding-top: 40px;
-	text-align: center;
-	background-color: #eee;
-	height: 100%;
-	color: #fff;
-}
-
-#login .inner {
-	width: 260px;
-	margin: 40px auto;
-	text-align: left;
-	padding: 10px;
-	border: 2px solid #fff;
-	/*border-bottom: 1px dashed #499ede;*/
-	background-color: #39a3ee;
-}
-#login .inner .fheader {
-	padding: 4px;
-	margin: 3px 0px 3px 0;
-	font-size: 14px;
-	font-weight: bold;
-}
-
-#login .inner .cssform p {
-	clear: left;
-	margin: 5px 0;
-	padding: 5px 0 8px 0;
-	padding-left: 105px;
-	border-top: 1px dashed #fff;
-	margin-bottom: 10px;
-	height: 1%;
-}
-#login .inner .cssform input[type='text'] {
-	width: 120px;
-}
-
-#login .inner .cssform label {
-	font-weight: bold;
-	float: left;
-	margin-left: -105px;
-	width: 100px;
-}
-
-#login .inner .login_message {
-	color: red;
-}
-
-#login .inner .text_ {
-	width: 120px;
-}
-
-#login .inner .chk {
-	height: 12px;
 }

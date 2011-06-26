@@ -29,7 +29,16 @@ class LoginController {
 	 */
 	def index = {
 		if (springSecurityService.isLoggedIn()) {
-			redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
+			def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
+			if (currentUserRoles.contains("ADMINISTRATOR")) {
+				redirect controller: "admin", action: "index"
+			} else if (currentUserRoles.contains("INSTRUCTOR")) {
+				redirect controller: "instructor", action: "index"
+			} else if (currentUserRoles.contains("STUDENT")) {
+				redirect controller: "student", action: "index"
+			} else {
+				redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
+			}
 		}
 		else {
 			redirect action: auth, params: params
