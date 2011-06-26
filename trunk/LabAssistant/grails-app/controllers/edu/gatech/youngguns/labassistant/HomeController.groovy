@@ -8,6 +8,9 @@ class HomeController {
 
 	def springSecurityService
 	
+	/**
+	 * Renders a main landing page ("control panel") based on the currently logged in user's roles.
+	 */
     def index = {
 		if (!springSecurityService.isLoggedIn()) {
 			redirect(controller: 'login', action: 'auth')
@@ -19,10 +22,16 @@ class HomeController {
 			int admins = UserRole.findAllWhere(role:Role.findByAuthority("ADMINISTRATOR")).size()
 			int instructors = UserRole.findAllWhere(role:Role.findByAuthority("INSTRUCTOR")).size()
 			int students = UserRole.findAllWhere(role:Role.findByAuthority("STUDENT")).size()
+			int courses = Course.count().toInteger()
+			Set adminCourses = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
+			int adminCourseCount = adminCourses.size()
 			render(view: 'admin', model:[activeUsers:activeUsers, lockedUsers: lockedUsers, admins: admins,
-				instructors: instructors, students: students])
+				instructors: instructors, students: students, courses: courses, adminCourses: adminCourses, 
+				adminCourseCount: adminCourseCount])
 		} else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
-			render(view: 'instructor', model:[])
+			Set courses = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
+			int courseCount = courses.size()
+			render(view: 'instructor', model:[courses: courses, courseCount: courseCount])
 		} else if (currentUserRoles.contains(Role.findByAuthority("STUDENT"))) {
 			render(view: 'student', model:[])
 		} else {

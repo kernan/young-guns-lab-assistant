@@ -2,8 +2,9 @@ package edu.gatech.youngguns.labassistant
 
 import org.apache.commons.lang.builder.HashCodeBuilder
 
-
 class Course {
+	
+	def springSecurityService
 	
 	String name
 	User instructor
