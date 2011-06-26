@@ -2,6 +2,7 @@ package edu.gatech.youngguns.labassistant
 
 import org.apache.commons.lang.builder.HashCodeBuilder
 
+
 class Course {
 	
 	String name
@@ -20,8 +21,8 @@ class Course {
 	 * mapping for tables containing Courses
 	 */
 	static mapping = {
-		name column: "'name'"
-		instructor column: "'instructor'"
+		name column: "`name`"
+		instructor column: "`instructor`"
 	}
 	
 	/**
