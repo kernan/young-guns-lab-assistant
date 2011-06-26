@@ -19,12 +19,12 @@ class HomeController {
 			int admins = UserRole.findAllWhere(role:Role.findByAuthority("ADMINISTRATOR")).size()
 			int instructors = UserRole.findAllWhere(role:Role.findByAuthority("INSTRUCTOR")).size()
 			int students = UserRole.findAllWhere(role:Role.findByAuthority("STUDENT")).size()
-			render(view: '/home/admin', model:[activeUsers:activeUsers, lockedUsers: lockedUsers, admins: admins,
+			render(view: 'admin', model:[activeUsers:activeUsers, lockedUsers: lockedUsers, admins: admins,
 				instructors: instructors, students: students])
 		} else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
-			render(view: '/home/instructor', model:[])
+			render(view: 'instructor', model:[])
 		} else if (currentUserRoles.contains(Role.findByAuthority("STUDENT"))) {
-			render(view: '/home/student', model:[])
+			render(view: 'student', model:[])
 		} else {
 			render(view: '/index')
 		}
