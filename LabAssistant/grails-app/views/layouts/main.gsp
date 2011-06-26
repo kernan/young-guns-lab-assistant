@@ -30,7 +30,7 @@
 						<li><h2><g:message code="menu.courses.heading" /></h2>
 							<ul>
 								<sec:ifLoggedIn>
-								<li><g:link controller="course" action="show"><g:message code="menu.courses.view" /></g:link></li>
+								<li><g:link controller="course" action="list"><g:message code="menu.courses.view" /></g:link></li>
 								</sec:ifLoggedIn>
 								<sec:ifAnyGranted roles="INSTRUCTOR,ADMINISTRATOR">
 								<li><g:link controller="course" action="create"><g:message code="menu.courses.create" /></g:link></li>
@@ -45,7 +45,7 @@
 						<li><h2><g:message code="menu.labs.heading" /></h2>
 							<ul>
 								<sec:ifLoggedIn>
-								<li><g:link controller="lab" action="show"><g:message code="menu.labs.view" /></g:link></li>
+								<li><g:link controller="lab" action="list"><g:message code="menu.labs.view" /></g:link></li>
 								</sec:ifLoggedIn>
 								<sec:ifAnyGranted roles="INSTRUCTOR,ADMINISTRATOR">
 								<li><g:link controller="lab" action="create"><g:message code="menu.labs.create" /></g:link></li>
@@ -57,7 +57,7 @@
 						<li><h2><g:message code="menu.teams.heading" /></h2>
 							<ul>
 								<sec:ifLoggedIn>
-								<li><g:link controller="team" action="show"><g:message code="menu.teams.view" /></g:link></li>
+								<li><g:link controller="team" action="list"><g:message code="menu.teams.view" /></g:link></li>
 								</sec:ifLoggedIn>
 								<sec:ifAnyGranted roles="STUDENT,ADMINISTRATOR">
 								<li><g:link controller="team" action="join"><g:message code="menu.teams.join" /></g:link></li>
@@ -69,9 +69,10 @@
 					<ul>
 						<li><h2><g:message code="menu.administer.heading" /></h2>
 							<ul>
-								<li><g:link controller="users" action="show"><g:message code="menu.administer.users.view" /></g:link></li>
-								<li><g:link controller="users" action="reset"><g:message code="menu.administer.reset" /></g:link></li>
-								<li><g:link controller="users" action="suspend"><g:message code="menu.administer.suspend" /></g:link></li>
+								<li><g:link controller="home" action="index"><g:message code="menu.administer.cp" /></g:link></li>
+								<li><g:link controller="user" action="list"><g:message code="menu.administer.users.view" /></g:link></li>
+								<li><g:link controller="user" action="reset"><g:message code="menu.administer.reset" /></g:link></li>
+								<li><g:link controller="user" action="suspend"><g:message code="menu.administer.suspend" /></g:link></li>
 							</ul>
 						</li>
 					</ul>

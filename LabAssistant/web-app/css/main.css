@@ -23,6 +23,13 @@ h2, p {
 	margin-bottom: 2px;
 }
 
+h4 {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 3px;
+	margin-bottom: 2px;
+}
+
 #logo {
 	padding:10px;
 }
@@ -376,4 +383,12 @@ th.desc a {
 .buttons input.save {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 28px;
+}
+
+/* MISCELLANEOUS */
+
+#cpCourseList ul {
+	margin-left: 20px;
+	margin-bottom: 4px;
+	list-style: none;
 }

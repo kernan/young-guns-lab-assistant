@@ -41,7 +41,14 @@ class CourseController {
     */
    def save = {
 	   //TODO: Redirect to list if HTTPrequest didn't come from create?
-	   def course = new Course(params)
+	   String name = params['name']
+	   User instructor
+	   if (params['instructor']) { 
+		   instructor = User.findByName(params['instructor'])
+	   } else {
+	   		instructor = User.get(springSecurityService.principal.id)
+	   }
+	   def course = new Course(name: name, instructor: instructor)
 	   course.save()
 	   redirect action:'list'
    }
