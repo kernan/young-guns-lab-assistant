@@ -41,7 +41,7 @@ class CourseController {
 		   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
 	   }
 	   else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
-	   		def courseList = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
+	   		def courseList = User.get(springSecurityService.principal.id).courses
 	   		render(view: 'list', model: [courseList: courseList, courseTotal: courseList.size()])
 	   }
 	   else {
@@ -65,15 +65,14 @@ class CourseController {
    	def save = {
 	   //TODO: Redirect to list if HTTPrequest didn't come from create?
 	   String name = params['name']
-	   Instructor instructor
+	   User instructor
 	   if (params['instructor']) { 
-		   instructor = Instructor.findByName(params['instructor'])
+		   instructor = User.findByName(params['instructor'])
 	   }
 	   else {
-	   		instructor = Instructor.get(springSecurityService.principal.id)
+	   		instructor = User.get(springSecurityService.principal.id)
 	   }
-	   def course = new Course(name: name)
-	   instructor.addCourse(course)
+	   def course = new Course(name: name, instructor: instructor)
 	   course.save()
 	   redirect action:'list'
    }
