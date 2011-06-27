@@ -15,8 +15,10 @@ class HomeController {
 		if (!springSecurityService.isLoggedIn()) {
 			redirect(controller: 'login', action: 'auth')
 		}
+		//get current user's authorities
 		def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
 		if (currentUserRoles.contains(Role.findByAuthority("ADMINISTRATOR"))) {
+			//activate all admin views
 			int activeUsers = User.findAllWhere(enabled:true).size()
 			int lockedUsers = User.findAllWhere(accountLocked:true).size()
 			int admins = UserRole.findAllWhere(role:Role.findByAuthority("ADMINISTRATOR")).size()
@@ -28,13 +30,19 @@ class HomeController {
 			render(view: 'admin', model:[activeUsers:activeUsers, lockedUsers: lockedUsers, admins: admins,
 				instructors: instructors, students: students, courses: courses, adminCourses: adminCourses, 
 				adminCourseCount: adminCourseCount])
-		} else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
+		}
+		else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
+			//activate all instructor views
 			Set courses = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
 			int courseCount = courses.size()
 			render(view: 'instructor', model:[courses: courses, courseCount: courseCount])
-		} else if (currentUserRoles.contains(Role.findByAuthority("STUDENT"))) {
+		}
+		else if (currentUserRoles.contains(Role.findByAuthority("STUDENT"))) {
+			//activate all student views
 			render(view: 'student', model:[])
-		} else {
+		}
+		else {
+			//not recognized authority
 			render(view: '/index')
 		}
 	}

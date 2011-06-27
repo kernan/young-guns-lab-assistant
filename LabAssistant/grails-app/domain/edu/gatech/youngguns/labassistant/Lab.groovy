@@ -1,18 +1,14 @@
 package edu.gatech.youngguns.labassistant
 
-class Course {
-	
+class Lab {
 	/**
 	* Dependency injection for the springSecurityService.
 	*/
     def springSecurityService
-	
+   
 	String name
-	Instructor instructor
-	Set<Student> students
-	Set<Lab> labs
-	
-	/**
+
+    /**
 	 * constraints for Course params
 	 */
 	static constraints = {
@@ -24,7 +20,6 @@ class Course {
 	 */
 	static mapping = {
 		name column: "`name`"
-		instructor column: "`instructor`"
 	}
 	
 	/**

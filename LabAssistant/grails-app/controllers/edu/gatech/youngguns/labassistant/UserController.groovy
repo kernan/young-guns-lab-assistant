@@ -56,7 +56,8 @@ class UserController {
 			Administrator admin = new Administrator(name: name, username: username, password: password, enabled: enabled)
 			admin.save()
 			UserRole.create(admin, Role.findByAuthority("ADMINISTRATOR"))
-		} else if (params['type'] == 'instructor') {
+		}
+		else if (params['type'] == 'instructor') {
 			String name = params['name']
 			String username = params['username']
 			def password = springSecurityService.encodePassword(params['password1'])

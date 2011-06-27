@@ -45,7 +45,8 @@ class CourseController {
 	   User instructor
 	   if (params['instructor']) { 
 		   instructor = User.findByName(params['instructor'])
-	   } else {
+	   }
+	   else {
 	   		instructor = User.get(springSecurityService.principal.id)
 	   }
 	   def course = new Course(name: name, instructor: instructor)
