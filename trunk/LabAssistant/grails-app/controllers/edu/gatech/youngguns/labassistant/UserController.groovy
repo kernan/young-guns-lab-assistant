@@ -1,11 +1,22 @@
 package edu.gatech.youngguns.labassistant
 
+import grails.plugins.springsecurity.Secured
+
+/**
+ * 
+ * @author William Dye
+ *
+ */
+
 class UserController {
 	
 	def springSecurityService
 	
 	static defaultAction = 'index'
 	
+	/**
+	 * 
+	 */
 	def index = {
 		if (!springSecurityService.isLoggedIn()) {
 			redirect(controller: 'login', action: 'auth')
@@ -13,6 +24,9 @@ class UserController {
 		list()
 	}
 	
+	/**
+	 * 
+	 */
 	def list = {
 		Set users = User.list()
 		int userCount = users.size()
@@ -27,23 +41,35 @@ class UserController {
 			instructorRole: instructorRole])
 	}
 	
+	/**
+	 * 
+	 */
+	@Secured(["hasRole('ADMINISTRATOR')"])
 	def create = {
 		render(view: 'create')
 	}
 	
+	/**
+	 * 
+	 */
 	def selectType = {
 		if (!params['type']) {
 			render(view: 'create')
 		}
 		if (params['type'] == "Administrator") {
 			render(view: 'createAdmin')
-		} else if (params['type'] == "Instructor") {
+		}
+		else if (params['type'] == "Instructor") {
 			render(view: 'createInstructor')
-		} else {
+		}
+		else {
 			render(view: 'createStudent')
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	def save = {
 		if (!params['type']) {
 			render(view: 'create')

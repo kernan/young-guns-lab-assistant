@@ -1,5 +1,13 @@
 package edu.gatech.youngguns.labassistant
 
+import grails.plugins.springsecurity.Secured
+
+/**
+ * 
+ * @author Kyle Petrovich
+ *
+ */
+
 class CourseController {
 
 	/**
@@ -13,12 +21,13 @@ class CourseController {
 	*/
    def index = {
 	   if (springSecurityService.isLoggedIn()) {
-		   redirect action:'list'
+		   redirect(action:'list')
 	   }
 	   else {
 		   redirect(controller:'login',action:'auth')
 	   }
    }
+   
    /**
     * List all courses.
     */
@@ -30,10 +39,12 @@ class CourseController {
 	   def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
 	   if (currentUserRoles.contains(Role.findByAuthority("ADMINISTRATOR"))) {
 		   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
-	   } else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
+	   }
+	   else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
 	   		def courseList = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
 	   		render(view: 'list', model: [courseList: courseList, courseTotal: courseList.size()])
-	   } else {
+	   }
+	   else {
 	   		render(text: 'Under Construction')
 	   		// TODO: make something happen for students
 	   }
@@ -41,26 +52,28 @@ class CourseController {
    
    /**
     * Display create course page if user has proper permissions.
+    * @Secured can only be accessed by: ADMINISTRATOR, INSTRUCTOR
     */
-   def create = {
-	   //TODO: Restrict this page to instructors and Sysadmins only.
-	   return
+   @Secured(["hasRole(['ADMINISTRATOR', 'INSTRUCTOR'])"])
+   	def create = {
+	   render(view:'create')
    }
    
    /**
     * Save course object from form if coming from create, then redirect to list.
     */
-   def save = {
+   	def save = {
 	   //TODO: Redirect to list if HTTPrequest didn't come from create?
 	   String name = params['name']
-	   User instructor
+	   Instructor instructor
 	   if (params['instructor']) { 
-		   instructor = User.findByName(params['instructor'])
+		   instructor = Instructor.findByName(params['instructor'])
 	   }
 	   else {
-	   		instructor = User.get(springSecurityService.principal.id)
+	   		instructor = Instructor.get(springSecurityService.principal.id)
 	   }
-	   def course = new Course(name: name, instructor: instructor)
+	   def course = new Course(name: name)
+	   instructor.addCourse(course)
 	   course.save()
 	   redirect action:'list'
    }

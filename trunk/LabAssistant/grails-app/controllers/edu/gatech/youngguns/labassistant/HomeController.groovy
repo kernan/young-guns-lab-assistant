@@ -4,8 +4,17 @@ import edu.gatech.youngguns.labassistant.Role
 import edu.gatech.youngguns.labassistant.User
 import edu.gatech.youngguns.labassistant.UserRole
 
+/**
+ * 
+ * @author William Dye
+ *
+ */
+
 class HomeController {
 
+	/**
+	* Dependency injection for the springSecurityService.
+	*/
 	def springSecurityService
 	
 	/**

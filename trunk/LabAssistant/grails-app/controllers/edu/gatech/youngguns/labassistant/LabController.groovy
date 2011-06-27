@@ -1,38 +1,50 @@
 package edu.gatech.youngguns.labassistant
 
+import grails.plugins.springsecurity.Secured
+
+/**
+ * 
+ * @author Robert Kernan
+ *
+ * controller for Lab
+ *   creates, lists, and saves Lab objects
+ */
+
 class LabController {
 	
-	/**
-	* Dependency injection for the springSecurityService.
-	*/
-    def springSecurityService
-
+	def springSecurityService
+	
    /**
-    * default action, redirects to list
+    * lists all labs if logged in, otherwise redirects to login
     */
     def index = {
-		//TODO add permission authentication
-		redirect action: 'list'
+		if(springSecurityService.isLoggedIn()) {
+			redirect(action: 'list')
+		}
+		else {
+			redirect(controller: 'auth', action: 'login')
+		}
 	}
 	
 	/**
-	 * create a new lab
+	* list all labs
+	*/
+   def list = {
+	   //TODO only list labs within current course
+	   return [labList: Lab.list(), labTotal: Lab.count()]
+   }
+	
+	/**
+	 * redirects to save for Lab creation
+	 * @Secured can only be accessed by: ADMINISTRATOR, INSTRUCTOR
 	 */
+	@Secured(["hasRole(['ADMINISTRATOR', 'INSTRUCTOR'])"])
 	def create = {
-		//TODO add permission authentication
-		return
+		redirect(action: 'save')
 	}
 	
 	/**
-	 * list all labs
-	 */
-	def list = {
-		//TODO add permission authentication
-		return [labList: Lab.list(), labTotal: Lab.count()]
-	}
-	
-	/**
-	* Save course object from form if coming from create, then redirect to list.
+	* create and save Lab from web form, then redirect to list
 	*/
    def save = {
 	   String name = params['name']
@@ -40,6 +52,6 @@ class LabController {
 	   //TODO add the lab to the course
 	   def lab = new Lab(name: name, instructor: instructor)
 	   lab.save()
-	   redirect action:'list'
+	   redirect(action:'list')
    }
 }
