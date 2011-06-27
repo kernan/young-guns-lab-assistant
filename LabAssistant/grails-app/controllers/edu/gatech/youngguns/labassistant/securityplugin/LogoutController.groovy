@@ -1,4 +1,12 @@
+package edu.gatech.youngguns.labassistant.securityplugin
+
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+
+/**
+ * 
+ * @author William Dye
+ *
+ */
 
 class LogoutController {
 
