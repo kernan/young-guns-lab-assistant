@@ -77,6 +77,16 @@
 						</li>
 					</ul>
 					</sec:ifAllGranted>
+					<sec:ifAnyGranted roles="STUDENT,INSTRUCTOR">
+					<ul>
+						<li><h2><g:message code="menu.home.heading" /></h2>
+							<ul>
+								<li><g:link controller="home" action="index"><g:message code="menu.home.cp" /></g:link></li>
+								<li><g:link controller="logout"><g:message code="menu.home.signout" /></g:link></li>
+							</ul>
+						</li>
+					</ul>
+					</sec:ifAnyGranted>
 				</div>
 				</div>
 			</div>
