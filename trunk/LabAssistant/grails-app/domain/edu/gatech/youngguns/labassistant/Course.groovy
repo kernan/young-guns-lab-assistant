@@ -8,7 +8,7 @@ class Course {
     def springSecurityService
 	
 	String name
-	Instructor instructor
+	User instructor
 	Set<Student> students
 	Set<Lab> labs
 	
