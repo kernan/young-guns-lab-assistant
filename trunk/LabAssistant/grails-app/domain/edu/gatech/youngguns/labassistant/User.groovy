@@ -1,5 +1,11 @@
 package edu.gatech.youngguns.labassistant
 
+/**
+ * 
+ * @author William Dye
+ *
+ */
+
 class User {
 
 	String username
@@ -24,6 +30,10 @@ class User {
 		accountLocked column: "`locked`"
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this).collect { it.role } as Set
 	}
