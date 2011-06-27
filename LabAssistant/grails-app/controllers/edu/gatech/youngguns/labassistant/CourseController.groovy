@@ -12,12 +12,12 @@ class CourseController {
 	* all courses.
 	*/
    def index = {
-	   //if (springSecurityService.isLoggedIn()) {
+	   if (springSecurityService.isLoggedIn()) {
 		   redirect action:'list'
-	   //}
-	   //else {
-		   //redirect(controller:'login',action:'auth')
-	   //}
+	   }
+	   else {
+		   redirect(controller:'login',action:'auth')
+	   }
    }
    /**
     * List all courses.
