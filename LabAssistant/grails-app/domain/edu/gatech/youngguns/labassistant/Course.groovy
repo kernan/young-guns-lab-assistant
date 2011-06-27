@@ -1,43 +1,26 @@
 package edu.gatech.youngguns.labassistant
 
+/**
+ * 
+ * @author Robert Kernan
+ *
+ * model for a course
+ *   dependent on: labs
+ *   dependent to: Instructor(User), Student(User)
+ */
+
 class Course {
 	
-	/**
-	* Dependency injection for the springSecurityService.
-	*/
-    def springSecurityService
-	
 	String name
-	User instructor
-	Set<Student> students
-	Set<Lab> labs
+	static hasMany = [labs: Lab]
+	Set labs
+	static belongsTo = [instructor: Instructor, students: Student]
 	
-	/**
-	 * constraints for Course params
-	 */
 	static constraints = {
 		name(blank: false, unique: true)
 	}
 	
-	/**
-	 * mapping for tables containing Courses
-	 */
 	static mapping = {
 		name column: "`name`"
-		instructor column: "`instructor`"
-	}
-	
-	/**
-	 * checks equality based on Course name
-	 */
-	boolean equals(other) {
-		return this.name.equals(other.getName())
-	}
-	
-	/**
-	 * outputs Course name
-	 */
-	String toString() {
-		return this.name
 	}
 }
