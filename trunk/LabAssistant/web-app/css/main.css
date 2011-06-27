@@ -175,6 +175,24 @@ div#menu ul li:hover ul, div#menu ul ul li:hover ul, div#menu ul ul ul li:hover 
 	display: block;
 }
 
+/* FORMS */
+
+#form ul {
+	list-style: none;
+}
+
+#form label, #form input {
+	display: block;
+	width: 100px;
+	float: left;
+	margin-bottom: 3px;
+}
+
+#form input[type='submit'] {
+	display: block;
+	float: right;
+}
+
 /* NAVIGATION MENU */
 
 .nav {
