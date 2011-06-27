@@ -37,6 +37,8 @@ class CourseController {
 		   redirect(controller: 'login', action: 'auth')
 	   }
 	   def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
+	   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
+	   /*
 	   if (currentUserRoles.contains(Role.findByAuthority("ADMINISTRATOR"))) {
 		   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
 	   }
@@ -47,7 +49,8 @@ class CourseController {
 	   else {
 	   		render(text: 'Under Construction')
 	   		// TODO: make something happen for students
-	   }
+	   
+	   }*/
    }
    
    /**

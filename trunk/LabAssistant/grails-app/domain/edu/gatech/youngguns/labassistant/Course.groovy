@@ -20,7 +20,8 @@ class Course {
 	}
 	
 	static mapping = {
-		name column: "`name`"
+		name(column: "`name`")
+		relationships(cascade: 'delete')
 	}
 	
 	public int studentCount ()  {
