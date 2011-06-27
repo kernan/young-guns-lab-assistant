@@ -24,8 +24,19 @@ class CourseController {
     */
    def list = {
 	   //TODO: Add "join" link next to each one if Student.
-	   return [courseList: Course.list(), courseTotal: Course.count()]
-	   
+	   if (!springSecurityService.isLoggedIn()) {
+		   redirect(controller: 'login', action: 'auth')
+	   }
+	   def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
+	   if (currentUserRoles.contains(Role.findByAuthority("ADMINISTRATOR"))) {
+		   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
+	   } else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
+	   		def courseList = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
+	   		render(view: 'list', model: [courseList: courseList, courseTotal: courseList.size()])
+	   } else {
+	   		render(text: 'Under Construction')
+	   		// TODO: make something happen for students
+	   }
    }
    
    /**
