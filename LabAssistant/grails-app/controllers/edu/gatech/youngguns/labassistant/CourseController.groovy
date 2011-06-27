@@ -41,7 +41,7 @@ class CourseController {
 		   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
 	   }
 	   else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
-	   		def courseList = User.get(springSecurityService.principal.id).courses
+	   		def courseList = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
 	   		render(view: 'list', model: [courseList: courseList, courseTotal: courseList.size()])
 	   }
 	   else {
