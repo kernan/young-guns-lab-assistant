@@ -13,8 +13,7 @@ class Course {
 	
 	String name
 	static hasMany = [labs: Lab]
-	Set labs
-	static belongsTo = [instructor: Instructor, students: Student]
+	static belongsTo = [instructor: User]
 	
 	static constraints = {
 		name(blank: false, unique: true)
@@ -22,5 +21,9 @@ class Course {
 	
 	static mapping = {
 		name column: "`name`"
+	}
+	
+	public int studentCount ()  {
+		return StudentCourse.findAllByCourse(this)?.size() ?: 0
 	}
 }

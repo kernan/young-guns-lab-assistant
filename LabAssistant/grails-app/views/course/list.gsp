@@ -18,7 +18,7 @@
    			<tr>
    				<td>${course.name}</td>
    				<td>${course.instructor.name}</td>
-   				<td>${course.students?.size() ?: 0}</td>
+   				<td>${course.studentCount()}</td>
    				<td>${course.labs?.size() ?: 0}</td>
    			</tr>
 		</g:each>

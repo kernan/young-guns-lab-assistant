@@ -11,7 +11,6 @@ import java.util.Set;
 class Instructor extends User {
 	
 	static hasMany = [courses: Course]
-	Set courses
 
 	static constraints = {
 	}

@@ -7,7 +7,9 @@ package edu.gatech.youngguns.labassistant
  */
 
 class Administrator extends User {
-
+	
+	static hasMany = [courses: Course]
+	
     static constraints = {
     }
 }
