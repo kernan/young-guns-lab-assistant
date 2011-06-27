@@ -10,7 +10,7 @@ import org.aspectj.weaver.ResolvedType.SuperClassWalker;
  */
 
 class Student extends User {
-	
+
 	/**
 	* Dependency injection for the springSecurityService.
 	*/
