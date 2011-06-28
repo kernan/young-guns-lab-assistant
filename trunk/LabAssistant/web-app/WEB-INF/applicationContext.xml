@@ -38,5 +38,5 @@
         <property name="encoding">
           <value>utf-8</value>
         </property>
-   </bean>    	
+   </bean>   	
 </beans>

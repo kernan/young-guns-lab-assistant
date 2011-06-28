@@ -37,4 +37,26 @@ class User {
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this).collect { it.role } as Set
 	}
+	
+	boolean hasRole(String role) {
+		if (role && role in ["ADMINISTRATOR", "INSTRUCTOR", "STUDENT"]) {
+			return this.getAuthorities().contains(Role.findByAuthority(role))
+		}
+		return false
+	}
+	
+	boolean hasAnyRole(String... roles) {
+		if (roles) {
+			for (role in roles) {
+				if (!(role == "ADMINISTRATOR" || role == "INSTRUCTOR" || role == "STUDENT")) {
+					return false
+				}
+				if (this.getAuthorities().contains(Role.findByAuthority(role))) {
+					return true
+				}
+			}
+			return false
+		}
+		return false
+	}
 }
