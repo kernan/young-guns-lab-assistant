@@ -15,18 +15,19 @@ class UserController {
 	static defaultAction = 'index'
 	
 	/**
-	 * 
+	 * default action
+	 * @Secured restricted to: REMEMBERED USERS
 	 */
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def index = {
-		if (!springSecurityService.isLoggedIn()) {
-			redirect(controller: 'login', action: 'auth')
-		}
 		list()
 	}
 	
 	/**
-	 * 
+	 * lists how many of each role exist, how many are logged in, and all Users from every role
+	 * @Secured restricted to: REMEMBERED USERS
 	 */
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def list = {
 		Set users = User.list()
 		int userCount = users.size()
@@ -42,16 +43,19 @@ class UserController {
 	}
 	
 	/**
-	 * 
+	 * create a new User, redirects to save
+	 * @Secure restricted to: FULLY LOGGED IN USERS
 	 */
-	@Secured(["hasRole('ADMINISTRATOR')"])
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def create = {
 		render(view: 'create')
 	}
 	
 	/**
-	 * 
+	 * select what type of user to create
+	 * @Secured restricted to: FULLY LOGGED IN USERS
 	 */
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def selectType = {
 		if (!params['type']) {
 			render(view: 'create')
@@ -68,8 +72,10 @@ class UserController {
 	}
 	
 	/**
-	 * 
+	 * create new user from prompts, redirects to list when done
+	 * @Secured restricted to: FULLY LOGGED IN USERS
 	 */
+	@Secured(['IS_AUTHENTICATED_FULLY'])
 	def save = {
 		if (!params['type']) {
 			render(view: 'create')

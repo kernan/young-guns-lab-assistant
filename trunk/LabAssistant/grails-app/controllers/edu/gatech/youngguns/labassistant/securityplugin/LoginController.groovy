@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.web.WebAttributes
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
+import grails.plugins.springsecurity.Secured
+
 /**
  * 
  * @author William Dye
@@ -34,7 +36,9 @@ class LoginController {
 
 	/**
 	 * Default action; redirects to 'defaultTargetUrl' if logged in, /login/auth otherwise.
+	 * @Secured restricted to: none
 	 */
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def index = {
 		if (springSecurityService.isLoggedIn()) {
 			redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
@@ -46,7 +50,9 @@ class LoginController {
 
 	/**
 	 * Show the login page.
+	 * @Secured restricted to: none
 	 */
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def auth = {
 
 		def config = SpringSecurityUtils.securityConfig
@@ -64,7 +70,9 @@ class LoginController {
 
 	/**
 	 * The redirect action for Ajax requests. 
+	 * @Secured restricted to: none
 	 */
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def authAjax = {
 		response.setHeader 'Location', SpringSecurityUtils.securityConfig.auth.ajaxLoginFormUrl
 		response.sendError HttpServletResponse.SC_UNAUTHORIZED
@@ -72,7 +80,9 @@ class LoginController {
 
 	/**
 	 * Show denied page.
+	 * @Secured restricted to: none
 	 */
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def denied = {
 		if (springSecurityService.isLoggedIn() &&
 				authenticationTrustResolver.isRememberMe(SCH.context?.authentication)) {
@@ -84,6 +94,7 @@ class LoginController {
 	/**
 	 * Login page for users with a remember-me cookie but accessing a IS_AUTHENTICATED_FULLY page.
 	 */
+	@Secured(['IS_AUTHENTICATED_REMEMBERED'])
 	def full = {
 		def config = SpringSecurityUtils.securityConfig
 		render view: 'auth', params: params,
@@ -94,6 +105,7 @@ class LoginController {
 	/**
 	 * Callback after a failed login. Redirects to the auth page with a warning message.
 	 */
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def authfail = {
 
 		def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
@@ -128,14 +140,18 @@ class LoginController {
 
 	/**
 	 * The Ajax success redirect url.
+	 * @Secured restricted to: none
 	 */
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def ajaxSuccess = {
 		render([success: true, username: springSecurityService.authentication.name] as JSON)
 	}
 
 	/**
 	 * The Ajax denied redirect url.
+	 * @Secured restricted to: none
 	 */
+	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def ajaxDenied = {
 		render([error: 'access denied'] as JSON)
 	}

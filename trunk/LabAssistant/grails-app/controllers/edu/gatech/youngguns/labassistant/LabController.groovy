@@ -36,9 +36,7 @@ class LabController {
 	
 	/**
 	 * redirects to save for Lab creation
-	 * @Secured can only be accessed by: ADMINISTRATOR, INSTRUCTOR
 	 */
-	@Secured(["hasRole(['ADMINISTRATOR', 'INSTRUCTOR'])"])
 	def create = {
 		redirect(action: 'save')
 	}
