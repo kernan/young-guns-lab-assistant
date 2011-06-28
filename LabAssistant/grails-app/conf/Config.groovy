@@ -93,3 +93,18 @@ log4j = {
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'edu.gatech.youngguns.labassistant.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'edu.gatech.youngguns.labassistant.UserRole'
 grails.plugins.springsecurity.authority.className = 'edu.gatech.youngguns.labassistant.Role'
+
+/**
+ * NOT AUTO-GENERATED AFTER THIS POINT
+ * @author Robert Kernan
+ * 
+ * security settings
+ */
+//Spring Security lockdown
+grails.plugins.springsecurity.rejectIfNoRule = true
+//enable Spring Security annotations
+import grails.plugins.springsecurity.SecurityConfigType
+grails.plugins.springsecurity.securityConfigType = SecurityConfigType.Annotation//default, just showing what was done
+grails.plugins.springsecurity.controllerAnnotations.staticRules = [
+	'/': ['IS_AUTHENTICATED_ANONYMOUSLY']//couldn't figure out how to allow access to root without this
+ ]

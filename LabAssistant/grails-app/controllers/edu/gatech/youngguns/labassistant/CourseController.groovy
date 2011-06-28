@@ -18,19 +18,19 @@ class CourseController {
    /**
 	* Default action; If the user is not logged in, redirects to login, otherwise displays
 	* all courses.
+	* @Secured restricted to: REMEMBERED USERS
 	*/
+   @Secured(['IS_AUTHENTICATED_REMEMBERED'])
    def index = {
-	   if (springSecurityService.isLoggedIn()) {
-		   redirect(action:'list')
-	   }
-	   else {
-		   redirect(controller:'login',action:'auth')
-	   }
+	   redirect(action:'list')
    }
    
    /**
     * List all courses.
+    * list is different depending on current user's role
+    * @Secured restricted to: REMEMBERED USERS
     */
+   @Secured(['IS_AUTHENTICATED_REMEMBERED'])
    def list = {
 	   //TODO: Add "join" link next to each one if Student.
 	   if (!springSecurityService.isLoggedIn()) {
@@ -38,7 +38,7 @@ class CourseController {
 	   }
 	   def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
 	   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
-	   /*
+	   
 	   if (currentUserRoles.contains(Role.findByAuthority("ADMINISTRATOR"))) {
 		   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
 	   }
@@ -50,21 +50,23 @@ class CourseController {
 	   		render(text: 'Under Construction')
 	   		// TODO: make something happen for students
 	   
-	   }*/
+	   }
    }
    
    /**
     * Display create course page if user has proper permissions.
-    * @Secured can only be accessed by: ADMINISTRATOR, INSTRUCTOR
+    * @Secured restricted to: FULLY LOGGED IN USERS
     */
-   @Secured(["hasRole(['ADMINISTRATOR', 'INSTRUCTOR'])"])
-   	def create = {
+   @Secured(['IS_AUTHENTICATED_FULLY'])
+   def create = {
 	   render(view:'create')
    }
    
    /**
     * Save course object from form if coming from create, then redirect to list.
+    * @Secured restricted to: FULLY LOGGED IN USERS
     */
+	@Secured(['IS_AUTHENTICATED_FULLY'])
    	def save = {
 	   //TODO: Redirect to list if HTTPrequest didn't come from create?
 	   String name = params['name']
