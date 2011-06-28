@@ -18,19 +18,18 @@ class CourseController {
    /**
 	* Default action; If the user is not logged in, redirects to login, otherwise displays
 	* all courses.
-	* @Secured restricted to: REMEMBERED USERS
 	*/
-   @Secured(['IS_AUTHENTICATED_REMEMBERED'])
    def index = {
-	   redirect(action:'list')
+	   if (!springSecurityService.isLoggedIn()) {
+		   redirect(controller: 'login', action: 'auth')
+	   }
+	   list()
    }
    
    /**
     * List all courses.
     * list is different depending on current user's role
-    * @Secured restricted to: REMEMBERED USERS
     */
-   @Secured(['IS_AUTHENTICATED_REMEMBERED'])
    def list = {
 	   //TODO: Add "join" link next to each one if Student.
 	   if (!springSecurityService.isLoggedIn()) {
@@ -55,18 +54,23 @@ class CourseController {
    
    /**
     * Display create course page if user has proper permissions.
-    * @Secured restricted to: FULLY LOGGED IN USERS
+    * @Secured restricted to instructors and administrators
     */
-   @Secured(['IS_AUTHENTICATED_FULLY'])
    def create = {
-	   render(view:'create')
+	   if (!springSecurityService.isLoggedIn()) {
+		   redirect(controller: 'login', action: 'auth')
+	   }
+	   User currentUser = User.get(springSecurityService.principal.id)
+	   if (currentUser.hasAnyRole("ADMINISTRATOR", "INSTRUCTOR")) {
+		   render(view:'create')
+	   } else {
+	   		redirect(controller: 'login', action: 'denied')
+	   }
    }
    
    /**
     * Save course object from form if coming from create, then redirect to list.
-    * @Secured restricted to: FULLY LOGGED IN USERS
     */
-	@Secured(['IS_AUTHENTICATED_FULLY'])
    	def save = {
 	   //TODO: Redirect to list if HTTPrequest didn't come from create?
 	   String name = params['name']
