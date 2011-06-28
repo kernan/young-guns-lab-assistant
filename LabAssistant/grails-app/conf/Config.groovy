@@ -101,10 +101,10 @@ grails.plugins.springsecurity.authority.className = 'edu.gatech.youngguns.labass
  * security settings
  */
 //Spring Security lockdown
-grails.plugins.springsecurity.rejectIfNoRule = true
+grails.plugins.springsecurity.rejectIfNoRule = false//true
 //enable Spring Security annotations
 import grails.plugins.springsecurity.SecurityConfigType
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.Annotation//default, just showing what was done
-grails.plugins.springsecurity.controllerAnnotations.staticRules = [
+/*grails.plugins.springsecurity.controllerAnnotations.staticRules = [
 	'/': ['IS_AUTHENTICATED_ANONYMOUSLY']//couldn't figure out how to allow access to root without this
- ]
+ ]*/
