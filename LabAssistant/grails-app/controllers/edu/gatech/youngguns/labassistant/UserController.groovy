@@ -104,6 +104,15 @@ class UserController {
 			instructor.save()
 			UserRole.create(instructor, Role.findByAuthority("INSTRUCTOR"))
 		}
+		else if (params['type'] == 'student') {
+			String name = params['name']
+			String username = params['username']
+			def password = springSecurityService.encodePassword(params['password1'])
+			def enabled = params['enabled']
+			Student student = new Student(name: name, username: username, password: password, enabled: enabled)
+			student.save()
+			UserRole.create(student, Role.findByAuthority("STUDENT"))
+		}
 		redirect(action: 'list')
 	}
  }
