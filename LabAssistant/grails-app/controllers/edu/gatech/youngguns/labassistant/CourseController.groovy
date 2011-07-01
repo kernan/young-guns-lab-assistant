@@ -35,13 +35,11 @@ class CourseController {
 	   if (!springSecurityService.isLoggedIn()) {
 		   redirect(controller: 'login', action: 'auth')
 	   }
-	   def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
-	   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
 	   
-	   if (currentUserRoles.contains(Role.findByAuthority("ADMINISTRATOR"))) {
+	   if (session.currentUser.hasRole("ADMINISTRATOR")) {
 		   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
 	   }
-	   else if (currentUserRoles.contains(Role.findByAuthority("INSTRUCTOR"))) {
+	   else if (session.currentUser.hasRole("INSTRUCTOR")) {
 	   		def courseList = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
 	   		render(view: 'list', model: [courseList: courseList, courseTotal: courseList.size()])
 	   }
@@ -60,8 +58,7 @@ class CourseController {
 	   if (!springSecurityService.isLoggedIn()) {
 		   redirect(controller: 'login', action: 'auth')
 	   }
-	   User currentUser = User.get(springSecurityService.principal.id)
-	   if (currentUser.hasAnyRole("ADMINISTRATOR", "INSTRUCTOR")) {
+	   if (session.currentUser.hasRole("INSTRUCTOR")) {
 		   render(view:'create')
 	   } else {
 	   		redirect(controller: 'login', action: 'denied')
@@ -79,7 +76,7 @@ class CourseController {
 		   instructor = User.findByName(params['instructor'])
 	   }
 	   else {
-	   		instructor = User.get(springSecurityService.principal.id)
+	   		instructor = session.currentUser
 	   }
 	   def course = new Course(name: name, instructor: instructor)
 	   course.save()

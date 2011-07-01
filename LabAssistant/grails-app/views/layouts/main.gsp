@@ -17,7 +17,7 @@
 						<p>Welcome! Please <g:link controller="login" action="auth">sign in</g:link> to use the Lab Assistant.</p>
 					</sec:ifNotLoggedIn>
 					<sec:ifLoggedIn>
-						<p>Welcome, <sec:username />! (<g:link controller="logout">sign out</g:link>)</p>
+						<p>Welcome, ${currentUser.name}! (<g:link controller="logout">sign out</g:link>)</p>
 					</sec:ifLoggedIn>
 				</div>
 				<div id="logo">
@@ -77,16 +77,21 @@
 						</li>
 					</ul>
 					</sec:ifAllGranted>
-					<sec:ifAnyGranted roles="STUDENT,INSTRUCTOR">
+					<sec:ifNotGranted roles="ADMINISTRATOR">
 					<ul>
 						<li><h2><g:message code="menu.home.heading" /></h2>
 							<ul>
-								<li><g:link controller="home" action="index"><g:message code="menu.home.cp" /></g:link></li>
-								<li><g:link controller="logout"><g:message code="menu.home.signout" /></g:link></li>
+								<sec:ifLoggedIn>
+									<li><g:link controller="home" action="index"><g:message code="menu.home.cp" /></g:link></li>
+									<li><g:link controller="logout"><g:message code="menu.home.signout" /></g:link></li>
+								</sec:ifLoggedIn>
+								<sec:ifNotLoggedIn>
+									<li><g:link controller="login" action="auth"><g:message code="menu.home.signin" /></g:link></li>
+								</sec:ifNotLoggedIn>
 							</ul>
 						</li>
 					</ul>
-					</sec:ifAnyGranted>
+					</sec:ifNotGranted>
 				</div>
 				</div>
 			</div>

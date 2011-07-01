@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse
 
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 
+import org.codehaus.groovy.grails.commons.ConfigurationHolder as CH
+
 import org.springframework.security.authentication.AccountExpiredException
 import org.springframework.security.authentication.CredentialsExpiredException
 import org.springframework.security.authentication.DisabledException
@@ -41,7 +43,7 @@ class LoginController {
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def index = {
 		if (springSecurityService.isLoggedIn()) {
-			redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
+			redirect uri: CH.config.login.success.defaultUrl
 		}
 		else {
 			redirect action: auth, params: params
@@ -58,7 +60,7 @@ class LoginController {
 		def config = SpringSecurityUtils.securityConfig
 
 		if (springSecurityService.isLoggedIn()) {
-			redirect uri: config.successHandler.defaultTargetUrl
+			redirect uri: CH.config.login.success.defaultUrl
 			return
 		}
 

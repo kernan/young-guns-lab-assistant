@@ -93,3 +93,6 @@ log4j = {
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'edu.gatech.youngguns.labassistant.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'edu.gatech.youngguns.labassistant.UserRole'
 grails.plugins.springsecurity.authority.className = 'edu.gatech.youngguns.labassistant.Role'
+
+// Default landing page after login
+login.success.defaultUrl = '/home/index'
