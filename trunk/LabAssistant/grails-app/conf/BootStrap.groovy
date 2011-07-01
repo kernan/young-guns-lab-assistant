@@ -19,8 +19,10 @@ class BootStrap {
 			password: springSecurityService.encodePassword("admin"),
 			name: "Administrator", 
 			enabled: true).save(failOnError: true)
-		if (!admin.authorities.contains("ADMINISTRATOR")) {
+		if (!admin.authorities) {
 			UserRole.create(admin, adminRole)
+			UserRole.create(admin, instructorRole)
+			UserRole.create(admin, studentRole)
 		}
     }
 	

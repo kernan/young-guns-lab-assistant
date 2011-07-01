@@ -38,9 +38,20 @@ class UserController {
 		Role adminRole = Role.findByAuthority("ADMINISTRATOR")
 		Role instructorRole = Role.findByAuthority("INSTRUCTOR")
 		Role studentRole = Role.findByAuthority("STUDENT")
-		int adminCount = UserRole.findAllByRole(adminRole).size()
-		int instructorCount = UserRole.findAllByRole(instructorRole).size()
-		int studentCount = UserRole.findAllByRole(studentRole).size()
+		def adminList = UserRole.findAllByRole(adminRole)
+		int adminCount = adminList.size()
+		def adminIds = []
+		adminList.each { admin -> adminIds.add(admin.user.id) }
+		def instructorList = UserRole.findAllByRole(instructorRole)
+		int instructorCount = 0
+		instructorList.each { instructor ->
+			if (!adminIds.contains(instructor.user.id)) { instructorCount++ }
+		}
+		def studentList = UserRole.findAllByRole(studentRole)
+		int studentCount = 0
+		studentList.each { student ->
+			if (!adminIds.contains(student.user.id)) { studentCount ++ }
+		}
 		render(view: 'list', model: [users: users, userCount: userCount, adminCount: adminCount,
 			instructorCount: instructorCount, studentCount: studentCount, adminRole: adminRole, 
 			instructorRole: instructorRole])
@@ -53,8 +64,7 @@ class UserController {
 		if (!springSecurityService.isLoggedIn()) {
 			redirect(controller: 'login', action: 'auth')
 		}
-		User currentUser = User.get(springSecurityService.principal.id)
-		if (currentUser.hasRole("ADMINISTRATOR")) {
+		if (session.currentUser.hasRole("ADMINISTRATOR")) {
 			render(view: 'create')
 		} else {
 			redirect(controller: 'login', action: 'denied')
@@ -86,6 +96,9 @@ class UserController {
 		if (!params['type']) {
 			render(view: 'create')
 		}
+		Role adminRole = Role.findByAuthority("ADMINISTRATOR")
+		Role instructorRole = Role.findByAuthority("INSTRUCTOR")
+		Role studentRole = Role.findByAuthority("STUDENT")
 		if (params['type'] == 'admin') {
 			String name = params['name']
 			String username = params['username']
@@ -93,7 +106,9 @@ class UserController {
 			def enabled = params['enabled']
 			Administrator admin = new Administrator(name: name, username: username, password: password, enabled: enabled)
 			admin.save()
-			UserRole.create(admin, Role.findByAuthority("ADMINISTRATOR"))
+			UserRole.create(admin, adminRole)
+			UserRole.create(admin, instructorRole)
+			UserRole.create(admin, studentRole)
 		}
 		else if (params['type'] == 'instructor') {
 			String name = params['name']
@@ -102,7 +117,7 @@ class UserController {
 			def enabled = params['enabled']
 			Instructor instructor = new Instructor(name: name, username: username, password: password, enabled: enabled)
 			instructor.save()
-			UserRole.create(instructor, Role.findByAuthority("INSTRUCTOR"))
+			UserRole.create(instructor, instructorRole)
 		}
 		else if (params['type'] == 'student') {
 			String name = params['name']
@@ -111,7 +126,7 @@ class UserController {
 			def enabled = params['enabled']
 			Student student = new Student(name: name, username: username, password: password, enabled: enabled)
 			student.save()
-			UserRole.create(student, Role.findByAuthority("STUDENT"))
+			UserRole.create(student, studentRole)
 		}
 		redirect(action: 'list')
 	}
