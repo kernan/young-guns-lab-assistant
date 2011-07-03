@@ -21,57 +21,39 @@ class HomeController {
 	
 	/**
 	 * Renders a main landing page ("control panel") based on the currently logged in user's roles.
-	 * @Secured restricted to: none
+	 * @Secured logged in remembered, roles: all
 	 */
-	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
+	@Secured(["IS_AUTHENTICATED_REMEMBERED"])
     def index = {
-		if (!springSecurityService.isLoggedIn()) {
-			redirect(controller: 'login', action: 'auth')
+		//get current user's authorities
+		def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
+		if (currentUserRoles.contains(Role.findByAuthority("ROLE_ADMINISTRATOR"))) {
+			//activate all admin views
+			int activeUsers = User.findAllWhere(enabled:true).size()
+			int lockedUsers = User.findAllWhere(accountLocked:true).size()
+			int admins = UserRole.findAllWhere(role:Role.findByAuthority("ROLE_ADMINISTRATOR")).size()
+			int instructors = UserRole.findAllWhere(role:Role.findByAuthority("ROLE_INSTRUCTOR")).size()
+			int students = UserRole.findAllWhere(role:Role.findByAuthority("ROLE_STUDENT")).size()
+			int courses = Course.count().toInteger()
+			Set adminCourses = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
+			int adminCourseCount = adminCourses.size()
+			render(view: 'admin', model:[activeUsers:activeUsers, lockedUsers: lockedUsers, admins: admins,
+				instructors: instructors, students: students, courses: courses, adminCourses: adminCourses, 
+				adminCourseCount: adminCourseCount])
+		}
+		else if (currentUserRoles.contains(Role.findByAuthority("ROLE_INSTRUCTOR"))) {
+			//activate all instructor views
+			Set courses = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
+			int courseCount = courses.size()
+			render(view: 'instructor', model:[courses: courses, courseCount: courseCount])
+		}
+		else if (currentUserRoles.contains(Role.findByAuthority("ROLE_STUDENT"))) {
+			//activate all student views
+			render(view: 'student', model:[])
 		}
 		else {
-			//get current user's authorities
-			if (session.currentUser.hasRole("ADMINISTRATOR")) {
-				//activate all admin views
-				Role adminRole = Role.findByAuthority("ADMINISTRATOR")
-				Role instructorRole = Role.findByAuthority("INSTRUCTOR")
-				Role studentRole = Role.findByAuthority("STUDENT")
-				int activeUsers = User.findAllWhere(enabled:true).size()
-				int lockedUsers = User.findAllWhere(accountLocked:true).size()
-				def adminList = UserRole.findAllByRole(adminRole)
-				int admins = adminList.size()
-				def adminIds = []
-				adminList.each { admin -> adminIds.add(admin.user.id) }
-				def instructorList = UserRole.findAllByRole(instructorRole)
-				int instructors = 0
-				instructorList.each { instructor ->
-					if (!adminIds.contains(instructor.user.id)) { instructors++ }
-				}
-				def studentList = UserRole.findAllByRole(studentRole)
-				int students = 0
-				studentList.each { student ->
-					if (!adminIds.contains(student.user.id)) { students ++ }
-				}
-				int courses = Course.count().toInteger()
-				Set adminCourses = Course.findAllByInstructor(session.currentUser)
-				int adminCourseCount = adminCourses.size()
-				render(view: 'admin', model:[activeUsers:activeUsers, lockedUsers: lockedUsers, admins: admins,
-					instructors: instructors, students: students, courses: courses, adminCourses: adminCourses, 
-					adminCourseCount: adminCourseCount])
-			}
-			else if (session.currentUser.hasRole("INSTRUCTOR")) {
-				//activate all instructor views
-				Set courses = Course.findAllByInstructor(session.currentUser)
-				int courseCount = courses.size()
-				render(view: 'instructor', model:[courses: courses, courseCount: courseCount])
-			}
-			else if (session.currentUser.hasRole("STUDENT")) {
-				//activate all student views
-				render(view: 'student', model:[])
-			}
-			else {
-				//not recognized authority
-				render(view: '/index')
-			}
+			//not recognized authority
+			render(view: '/index')
 		}
 	}
 }

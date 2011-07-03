@@ -39,7 +39,7 @@ class User {
 	}
 	
 	boolean hasRole(String role) {
-		if (role && role in ["ADMINISTRATOR", "INSTRUCTOR", "STUDENT"]) {
+		if (role && role in ["ROLE_ADMINISTRATOR", "ROLE_INSTRUCTOR", "ROLE_STUDENT"]) {
 			return this.getAuthorities().contains(Role.findByAuthority(role))
 		}
 		return false
@@ -48,7 +48,7 @@ class User {
 	boolean hasAnyRole(String... roles) {
 		if (roles) {
 			for (role in roles) {
-				if (!(role == "ADMINISTRATOR" || role == "INSTRUCTOR" || role == "STUDENT")) {
+				if (!(role == "ROLE_ADMINISTRATOR" || role == "ROLE_INSTRUCTOR" || role == "ROLE_STUDENT")) {
 					return false
 				}
 				if (this.getAuthorities().contains(Role.findByAuthority(role))) {

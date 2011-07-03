@@ -25,8 +25,8 @@
    		</table>
    		
    		<%-- If the user is an instructor or admin give them the right to make a course. --%>
-   		<sec:ifAnyGranted roles="ADMINISTRATOR,INSTRUCTOR">
-	   		<p><g:link controller="course" action="create"><g:message code="cp.admin.courses.add" /></g:link></p>
+   		<sec:ifAnyGranted roles="ROLE_ADMINISTRATOR,ROLE_INSTRUCTOR">
+	   		<p><g:link controller="course" action="create"><g:message code="cp.instructor.courses.add" /></g:link></p>
 	   	</sec:ifAnyGranted>
    	</body>
 </html>

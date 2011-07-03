@@ -17,7 +17,7 @@
 						<p>Welcome! Please <g:link controller="login" action="auth">sign in</g:link> to use the Lab Assistant.</p>
 					</sec:ifNotLoggedIn>
 					<sec:ifLoggedIn>
-						<p>Welcome, ${currentUser.name}! (<g:link controller="logout">sign out</g:link>)</p>
+						<p>Welcome, currentUser.name! (<g:link controller="logout">sign out</g:link>)</p>
 					</sec:ifLoggedIn>
 				</div>
 				<div id="logo">
@@ -32,10 +32,10 @@
 								<sec:ifLoggedIn>
 								<li><g:link controller="course" action="list"><g:message code="menu.courses.view" /></g:link></li>
 								</sec:ifLoggedIn>
-								<sec:ifAnyGranted roles="INSTRUCTOR,ADMINISTRATOR">
+								<sec:ifAnyGranted roles="ROLE_INSTRUCTOR,ROLE_ADMINISTRATOR">
 								<li><g:link controller="course" action="create"><g:message code="menu.courses.create" /></g:link></li>
 								</sec:ifAnyGranted>
-								<sec:ifAnyGranted roles="STUDENT,ADMINISTRATOR">
+								<sec:ifAnyGranted roles="ROLE_STUDENT,ROLE_ADMINISTRATOR">
 								<li><g:link controller="course" action="enroll"><g:message code="menu.courses.enroll" /></g:link></li>
 								</sec:ifAnyGranted>
 							</ul>
@@ -47,7 +47,7 @@
 								<sec:ifLoggedIn>
 								<li><g:link controller="lab" action="list"><g:message code="menu.labs.view" /></g:link></li>
 								</sec:ifLoggedIn>
-								<sec:ifAnyGranted roles="INSTRUCTOR,ADMINISTRATOR">
+								<sec:ifAnyGranted roles="ROLE_INSTRUCTOR,ROLE_ADMINISTRATOR">
 								<li><g:link controller="lab" action="create"><g:message code="menu.labs.create" /></g:link></li>
 								</sec:ifAnyGranted>
 							</ul>
@@ -59,13 +59,13 @@
 								<sec:ifLoggedIn>
 								<li><g:link controller="team" action="list"><g:message code="menu.teams.view" /></g:link></li>
 								</sec:ifLoggedIn>
-								<sec:ifAnyGranted roles="STUDENT,ADMINISTRATOR">
+								<sec:ifAnyGranted roles="ROLE_STUDENT,ROLE_ADMINISTRATOR">
 								<li><g:link controller="team" action="join"><g:message code="menu.teams.join" /></g:link></li>
 								</sec:ifAnyGranted>
 							</ul>
 						</li>
 					</ul>
-					<sec:ifAllGranted roles="ADMINISTRATOR">
+					<sec:ifAllGranted roles="ROLE_ADMINISTRATOR">
 					<ul>
 						<li><h2><g:message code="menu.administer.heading" /></h2>
 							<ul>
@@ -77,7 +77,7 @@
 						</li>
 					</ul>
 					</sec:ifAllGranted>
-					<sec:ifNotGranted roles="ADMINISTRATOR">
+					<sec:ifNotGranted roles="ROLE_ADMINISTRATOR">
 					<ul>
 						<li><h2><g:message code="menu.home.heading" /></h2>
 							<ul>
