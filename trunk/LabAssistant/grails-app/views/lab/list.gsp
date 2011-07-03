@@ -9,16 +9,20 @@
         <table>
             <tr>
                 <td><b><g:message code="labs.table.heading.name" /></b></td>
+                <td><b><g:message code="labs.table.heading.startDate" /></b>
+                <td><b><g:message code="labs.table.heading.endDate" /></b>
             </tr>
             <g:each in="${labList}" var="lab">
             <tr>
                 <td>${lab.name}</td>
+                <td>${lab.startDate}</td>
+                <td>${lab.endDate}</td>
             </tr>
         </g:each>
         </table>
         <!-- check user permissions -->
-        <sec:ifAnyGranted roles="ADMINISTRATOR,INSTRUCTOR">
-            <p><g:link controller="lab" action="create"><g:message code="cp.admin.labs.add" /></g:link></p>
+        <sec:ifAnyGranted roles="ROLE_ADMINISTRATOR,ROLE_INSTRUCTOR">
+            <p><g:link controller="lab" action="create"><g:message code="cp.instructor.labs.add" /></g:link></p>
         </sec:ifAnyGranted>
     </body>
 </html>
