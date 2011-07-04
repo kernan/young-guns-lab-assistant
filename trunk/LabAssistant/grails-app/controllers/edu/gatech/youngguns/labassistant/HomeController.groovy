@@ -7,7 +7,7 @@ import edu.gatech.youngguns.labassistant.UserRole
 import grails.plugins.springsecurity.Secured
 
 /**
- * 
+ *
  * @author William Dye
  *
  */
@@ -24,32 +24,30 @@ class HomeController {
 	 * @Secured logged in remembered, roles: all
 	 */
 	@Secured(["IS_AUTHENTICATED_REMEMBERED"])
-    def index = {
+	def index = {
 		//get current user's authorities
-		def currentUserRoles = User.get(springSecurityService.principal.id).getAuthorities()
+		def currentUserRoles = springSecurityService.currentUser.authorities
 		if (currentUserRoles.contains(Role.findByAuthority("ROLE_ADMINISTRATOR"))) {
 			//activate all admin views
 			int activeUsers = User.findAllWhere(enabled:true).size()
 			int lockedUsers = User.findAllWhere(accountLocked:true).size()
-			int admins = UserRole.findAllWhere(role:Role.findByAuthority("ROLE_ADMINISTRATOR")).size()
-			int instructors = UserRole.findAllWhere(role:Role.findByAuthority("ROLE_INSTRUCTOR")).size()
-			int students = UserRole.findAllWhere(role:Role.findByAuthority("ROLE_STUDENT")).size()
+			int admins = User.adminList()?.size() ?: 0
+			int instructors = User.instructorList()?.size() ?: 0
+			int students = User.studentList()?.size() ?: 0
 			int courses = Course.count().toInteger()
 			Set adminCourses = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
 			int adminCourseCount = adminCourses.size()
 			render(view: 'admin', model:[activeUsers:activeUsers, lockedUsers: lockedUsers, admins: admins,
-				instructors: instructors, students: students, courses: courses, adminCourses: adminCourses, 
+				instructors: instructors, students: students, courses: courses, adminCourses: adminCourses,
 				adminCourseCount: adminCourseCount])
-		}
-		else if (currentUserRoles.contains(Role.findByAuthority("ROLE_INSTRUCTOR"))) {
-			//activate all instructor views
-			Set courses = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
-			int courseCount = courses.size()
-			render(view: 'instructor', model:[courses: courses, courseCount: courseCount])
+		} else if (currentUserRoles.contains(Role.findByAuthority("ROLE_INSTRUCTOR"))) {
+			Set courses = Course.findAllByInstructor(springSecurityService.currentUser)
+			int courseCount = courses?.size() ?: 0
+			render(view: 'instructor', model: [courses: courses, courseCount: courseCount])
 		}
 		else if (currentUserRoles.contains(Role.findByAuthority("ROLE_STUDENT"))) {
 			//activate all student views
-			Set courses = StudentCourse.findAllByStudent(springSecurityService.getCurrentUser())
+			Set courses = StudentCourse.findAllByStudent(springSecurityService.currentUser)
 			int courseCount = courses.size()
 			render(view: 'student', model:[studentcourses: courses, courseCount: courseCount])
 		}

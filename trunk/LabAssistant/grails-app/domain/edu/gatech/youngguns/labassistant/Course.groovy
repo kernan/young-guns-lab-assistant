@@ -12,8 +12,9 @@ package edu.gatech.youngguns.labassistant
 class Course {
 	
 	String name
-	static hasMany = [labs: Lab]
+	
 	static belongsTo = [instructor: User]
+	static hasMany = [labs: Lab]
 	
 	static constraints = {
 		name(blank: false, unique: true)

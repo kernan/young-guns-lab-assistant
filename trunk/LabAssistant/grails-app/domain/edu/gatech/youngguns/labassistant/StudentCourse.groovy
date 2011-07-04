@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder
 
 class StudentCourse implements Serializable {
 
-	Student student
+	User student
 	Course course
 	
 	/**
@@ -46,7 +46,7 @@ class StudentCourse implements Serializable {
 	* @param course
 	* @return
 	*/
-   static StudentCourse create(Student student, Course course, boolean flush = false) {
+   static StudentCourse create(User student, Course course, boolean flush = false) {
 	   new StudentCourse(student: student, course: course).save(flush: flush, insert: true)
    }
 
@@ -56,7 +56,7 @@ class StudentCourse implements Serializable {
 	* @param course
 	* @return
 	*/
-   static boolean remove(Student student, Course course, boolean flush = false) {
+   static boolean remove(User student, Course course, boolean flush = false) {
 	   StudentCourse instance = StudentCourse.findByStudentAndCourse(student, course)
 	   instance ? instance.delete(flush: flush) : false
    }
@@ -65,7 +65,7 @@ class StudentCourse implements Serializable {
 	*
 	* @param student
 	*/
-   static void removeAll(Student student) {
+   static void removeAll(User student) {
 	   executeUpdate 'DELETE FROM StudentCourse WHERE student=:student', [student: student]
    }
 

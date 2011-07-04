@@ -33,14 +33,14 @@ class CourseController {
 	@Secured(["IS_AUTHENTICATED_REMEMBERED"])
    def list = {
 	   //TODO: Add "join" link next to each one if Student.
-	   if(User.get(springSecurityService.principal.id).hasRole("ROLE_ADMINISTRATOR")) {
+	   if(springSecurityService.currentUser.hasRole("ROLE_ADMINISTRATOR")) {
 		   render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()])
 	   }
-	   else if(User.get(springSecurityService.principal.id).hasRole("ROLE_INSTRUCTOR")) {
-	   		def courseList = Course.findAllByInstructor(User.get(springSecurityService.principal.id))
+	   else if(springSecurityService.currentUser.hasRole("ROLE_INSTRUCTOR")) {
+	   		def courseList = Course.findAllByInstructor(springSecurityService.currentUser)
 	   		render(view: 'list', model: [courseList: courseList, courseTotal: courseList.size()])
 	   }
-	   else if(User.get(springSecurityService.principal.id).hasRole("ROLE_STUDENT")) {
+	   else if(springSecurityService.currentUser.hasRole("ROLE_STUDENT")) {
 			render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()]) 
 			//Students can view and join any course.
 	   }
@@ -71,15 +71,15 @@ class CourseController {
 			instructor = User.findByName(params['instructor'])
 		}
 		else {
-			instructor = User.get(springSecurityService.principal.id)
+			instructor = springSecurityService.currentUser
 		}
 		def course = new Course(name: name, instructor: instructor)
 		course.save()
-		redirect action:'list'
+		redirect(action:'list')
 	}
 	@Secured(["IS_AUTHENTICATED_REMEMBERED", "ROLE_STUDENT"])
 	def join = {
-		StudentCourse.create(springSecurityService.getCurrentUser(), Course.get(params['course']))
+		StudentCourse.create(springSecurityService.currentUser, Course.get(params['course']))
 		render view: 'success'
 	}
 	

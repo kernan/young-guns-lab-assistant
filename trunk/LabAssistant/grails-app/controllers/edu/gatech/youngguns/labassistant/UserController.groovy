@@ -29,25 +29,21 @@ class UserController {
 	 */
 	@Secured(["IS_AUTHENTICATED_REMEMBERED", "ROLE_ADMINISTRATOR"])
 	def list = {
+		if (params['id']) {
+			render(view: 'show', model: [user: User.findById(Integer.parseInt(params['id']))])
+		}
+		if (!springSecurityService.isLoggedIn()) {
+			redirect(controller: 'login', action: 'auth')
+		}
 		Set users = User.list()
 		int userCount = users.size()
 		Role adminRole = Role.findByAuthority("ROLE_ADMINISTRATOR")
 		Role instructorRole = Role.findByAuthority("ROLE_INSTRUCTOR")
 		Role studentRole = Role.findByAuthority("ROLE_STUDENT")
-		def adminList = UserRole.findAllByRole(adminRole)
-		int adminCount = adminList.size()
-		def adminIds = []
-		adminList.each { admin -> adminIds.add(admin.user.id) }
-		def instructorList = UserRole.findAllByRole(instructorRole)
-		int instructorCount = 0
-		instructorList.each { instructor ->
-			if (!adminIds.contains(instructor.user.id)) { instructorCount++ }
-		}
-		def studentList = UserRole.findAllByRole(studentRole)
-		int studentCount = 0
-		studentList.each { student ->
-			if (!adminIds.contains(student.user.id)) { studentCount ++ }
-		}
+		def adminList = User.adminList()
+		int adminCount = adminList?.size() ?: 0
+		int instructorCount = User.instructorList()?.size() ?: 0
+		int studentCount = User.studentList()?.size() ?: 0
 		render(view: 'list', model: [users: users, userCount: userCount, adminCount: adminCount,
 			instructorCount: instructorCount, studentCount: studentCount, adminRole: adminRole, 
 			instructorRole: instructorRole])
