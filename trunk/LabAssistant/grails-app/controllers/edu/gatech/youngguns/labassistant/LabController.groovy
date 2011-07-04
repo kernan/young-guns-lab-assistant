@@ -33,9 +33,13 @@ class LabController {
 		//TODO only list labs within current course
 		render(view: 'list', model: [labList: Lab.list(), labTotal: Lab.count()])
 	}
-   
-   def report = {
-   }
+	
+	def show = {
+		if (!params['lab']) {
+			redirect(action: 'list')
+		}
+		render(view: 'show', model: [lab: Lab.findById(params['lab'] as long)])
+	}
 	
 	/**
 	 * redirects to save for Lab creation
@@ -70,7 +74,6 @@ class LabController {
 		User instructor
 		def lab = new Lab(name: name, startDate: startDate, endDate: endDate, course: course, type: type, maxTeamSize: teamSize/*, description: description*/)
 		lab.save(failOnError: true)
-		println "students in course = ${StudentCourse.findAllByCourse(course)?.getClass()}"
 		if (type == Lab.TeamType.RANDOM) {
 			labService.assignRandomTeams(lab)	
 		}

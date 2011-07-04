@@ -3,7 +3,7 @@
     <meta name="layout" content="main" />
 </head>
 <body>
-    <h2><g:message code="labs.create.heading" />${course.name}</h2>
+    <h2><g:message code="labs.create.heading" args="${[course.name]}" /></h2>
     <div id="form">
     	<g:form name='newLab' url='[controller:"lab",action:"save"]'>
     		<input type='hidden' name='course' value='${course.id}' />
