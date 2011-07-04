@@ -25,6 +25,6 @@ class Course {
 	}
 	
 	public int studentCount ()  {
-		return StudentCourse.findAllByCourse(this)?.size() ?: 0
+		return StudentCourse.findAllByCourse(this).size()
 	}
 }

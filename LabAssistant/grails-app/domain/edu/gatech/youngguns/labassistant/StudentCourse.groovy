@@ -76,7 +76,7 @@ class StudentCourse implements Serializable {
    static void removeAll(Course course) {
 	   executeUpdate 'DELETE FROM StudentCourse WHERE course=:course', [course: course]
    }
-
+   
    /**
 	*
 	*/

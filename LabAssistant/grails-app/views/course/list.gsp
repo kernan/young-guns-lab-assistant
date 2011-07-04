@@ -13,6 +13,9 @@
    				<td><b><g:message code="courses.table.heading.instructor" /></b></td>
    				<td><b><g:message code="courses.table.heading.students" /></b></td>
    				<td><b><g:message code="courses.table.heading.labs" /></b></td>
+   				<sec:ifAnyGranted roles="ROLE_STUDENT">
+   				<td><b><g:message code="courses.table.heading.join" /></b></td>
+   				</sec:ifAnyGranted>
    			</tr>
    			<g:each in="${courseList}" var="course">
    			<tr>
@@ -20,6 +23,14 @@
    				<td>${course.instructor.name}</td>
    				<td>${course.studentCount()}</td>
    				<td>${course.labs?.size() ?: 0}</td>
+   				<sec:ifAnyGranted roles="ROLE_STUDENT">
+   				<td>
+   					<g:form name="${course.name}" url="[controller:'course',action:'join']">
+   						<g:hiddenField name="course" value="${course.id}" />
+   						<g:actionSubmit action="join" value="${message(code: 'courses.join.submit')}" />
+   				</g:form>
+   				</td>
+   				</sec:ifAnyGranted>
    			</tr>
 		</g:each>
    		</table>
