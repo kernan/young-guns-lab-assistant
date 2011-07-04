@@ -5,16 +5,15 @@ class LabService {
     static transactional = false
 
     def assignRandomTeams (Lab lab) {
-		def students = StudentCourse.findAllByCourse(lab?.course)/*?.toArray()*/
+		def students = StudentCourse.findAllByCourse(lab?.course)
 		if (students) {
-			//students = Collections.shuffle(students) // randomize list
+			//students = Collections.shuffle(students)
 			int n = 1
 			while (students) {
-				Set teamMembers = []
+				Team t = new Team(name: "Team ${n++}", lab: lab, students: [])
 				for (int i = 0; i < lab.maxTeamSize; i++) {
-					if (students) { teamMembers << students.pop() }
+					if (students) { t.addToStudents(students.pop().student) }
 				}
-				Team t = new Team(name: "Team ${n++}", lab: lab, students: teamMembers)
 				t.save()
 			}
 		}

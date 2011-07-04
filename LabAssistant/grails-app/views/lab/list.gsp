@@ -14,7 +14,8 @@
             </tr>
             <g:each in="${labList}" var="lab">
             <tr>
-                <td>${lab.name}</td>
+            	<g:set var="labId" value="${lab.id}" />
+                <td><g:link controller="lab" action="show" params="[lab: labId]">${lab.name}</g:link></td>
                 <td>${lab.startDate}</td>
                 <td>${lab.endDate}</td>
             </tr>

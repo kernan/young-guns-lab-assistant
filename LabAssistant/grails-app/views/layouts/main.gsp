@@ -48,6 +48,7 @@
 								<li><g:link controller="lab" action="list"><g:message code="menu.labs.view" /></g:link></li>
 								</sec:ifLoggedIn>
 								<sec:ifAnyGranted roles="ROLE_INSTRUCTOR,ROLE_ADMINISTRATOR">
+								<!-- <li><g:link controller="lab" action="report"><g:message code="menu.labs.report" /></g:link></li> -->
 								<li><g:link controller="lab" action="create"><g:message code="menu.labs.create" /></g:link></li>
 								</sec:ifAnyGranted>
 							</ul>

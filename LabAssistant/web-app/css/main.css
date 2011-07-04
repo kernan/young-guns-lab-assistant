@@ -30,6 +30,12 @@ h4 {
 	margin-bottom: 2px;
 }
 
+ul {
+	margin-left: 15px;
+	margin-right: 20px;
+	margin-bottom: 1px;
+}
+
 #logo {
 	padding:10px;
 }
