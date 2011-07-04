@@ -41,8 +41,8 @@ class CourseController {
 	   		render(view: 'list', model: [courseList: courseList, courseTotal: courseList.size()])
 	   }
 	   else if(User.get(springSecurityService.principal.id).hasRole("ROLE_STUDENT")) {
-	   		render(text: 'Under Construction')
-	   		// TODO: make something happen for students
+			render(view: 'list', model: [courseList: Course.list(), courseTotal: Course.count()]) 
+			//Students can view and join any course.
 	   }
 	   else {
 		   render(view: '/index')
@@ -77,4 +77,11 @@ class CourseController {
 		course.save()
 		redirect action:'list'
 	}
+	@Secured(["IS_AUTHENTICATED_REMEMBERED", "ROLE_STUDENT"])
+	def join = {
+		StudentCourse.create(springSecurityService.getCurrentUser(), Course.get(params['course']))
+		render view: 'success'
+	}
+	
+	   
 }
