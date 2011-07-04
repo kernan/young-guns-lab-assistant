@@ -49,7 +49,9 @@ class HomeController {
 		}
 		else if (currentUserRoles.contains(Role.findByAuthority("ROLE_STUDENT"))) {
 			//activate all student views
-			render(view: 'student', model:[])
+			Set courses = StudentCourse.findAllByStudent(springSecurityService.getCurrentUser())
+			int courseCount = courses.size()
+			render(view: 'student', model:[studentcourses: courses, courseCount: courseCount])
 		}
 		else {
 			//not recognized authority
