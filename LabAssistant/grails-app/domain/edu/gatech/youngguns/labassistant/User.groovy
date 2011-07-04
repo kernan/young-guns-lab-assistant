@@ -59,4 +59,30 @@ class User {
 		}
 		return false
 	}
+	
+	static Set adminList () {
+		return UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMINISTRATOR"))
+	}
+	
+	static Set instructorList () {
+		def adminList = adminList()
+		def adminIds = [], instructorList = []
+		adminList.each { admin -> adminIds.add(admin.user.id) }
+		def allInstructors = UserRole.findAllByRole(Role.findByAuthority("ROLE_INSTRUCTOR"))
+		allInstructors.each { instructor ->
+			if (!adminIds.contains(instructor.user.id)) { instructorList += instructor }
+		}
+		return instructorList
+	}
+	
+	static Set studentList () {
+		def adminList = adminList()
+		def adminIds = [], studentList = []
+		adminList.each { admin -> adminIds.add(admin.user.id) }
+		def allStudents = UserRole.findAllByRole(Role.findByAuthority("ROLE_STUDENT"))
+		allStudents.each { student ->
+			if (!adminIds.contains(student.user.id)) { studentList += student }
+		}
+		return studentList
+	}
 }

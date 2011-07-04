@@ -10,16 +10,20 @@ package edu.gatech.youngguns.labassistant
 class Team {
 	
 	String name
+	
 	static belongsTo = [lab: Lab]
 	static hasMany = [students: User]
-	int maxSize
 
     static constraints = {
-		name(blank: false, unique: true)
-		maxSize(blank: false)
+		name(blank: false)
     }
 	
 	static mapping = {
 		relationships(cascade: 'delete')
 	}
+	
+	public int capacity () {
+		return this.lab.maxTeamSize
+	}
 }
+

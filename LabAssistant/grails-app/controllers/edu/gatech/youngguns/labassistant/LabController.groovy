@@ -13,6 +13,7 @@ import grails.plugins.springsecurity.Secured
 class LabController {
 	
 	def springSecurityService
+	def labService
 	
    /**
     * lists all labs if logged in, otherwise redirects to login
@@ -32,6 +33,9 @@ class LabController {
 		//TODO only list labs within current course
 		render(view: 'list', model: [labList: Lab.list(), labTotal: Lab.count()])
 	}
+   
+   def report = {
+   }
 	
 	/**
 	 * redirects to save for Lab creation
@@ -39,7 +43,14 @@ class LabController {
 	 */
    	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_INSTRUCTOR"])
 	def create = {
-		render(view: 'create')
+		if (Course.count() == 0) {
+			render(controller: 'course', action: 'create')
+		}
+		render(view: 'create', model: [courseList: Course.list()])
+	}
+	
+	def createLab = {
+		render(view: 'createLab', model: [course: Course.findById(params['course'])])
 	}
 	
 	/**
@@ -48,17 +59,21 @@ class LabController {
 	*/
 	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_INSTRUCTOR"])
 	def save = {
-		//TODO create different types of labs
-		//TODO get current course
-		Course couse
+		Course course = Course.findById(params['course'] as int)
 		String name = params['name']
 		Date startDate = params['startDate']
 		Date endDate = params['endDate']
+		int teamSize = params['teamSize'] as int
+		String typeString = params['type']
+		Lab.TeamType type = (typeString == "Individual" ? Lab.TeamType.INDIVIDUAL : typeString == "Random Select" ? Lab.TeamType.RANDOM : Lab.TeamType.SELF_SELECT)
 		//String description = params['description']
 		User instructor
-		def lab = new Lab(name: name, startDate: startDate, endDate: endDate/*, description: description*/)
-		//TODO add the lab to the course
-		lab.save()
+		def lab = new Lab(name: name, startDate: startDate, endDate: endDate, course: course, type: type, maxTeamSize: teamSize/*, description: description*/)
+		lab.save(failOnError: true)
+		println "students in course = ${StudentCourse.findAllByCourse(course)?.getClass()}"
+		if (type == Lab.TeamType.RANDOM) {
+			labService.assignRandomTeams(lab)	
+		}
 		redirect(action:'list')
 	}
 }

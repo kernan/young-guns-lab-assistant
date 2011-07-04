@@ -9,17 +9,14 @@ class UserFilters {
     def filters = {
         all(controller:'*', action:'*') {
             after = { model ->
-				if (model && springSecurityService.isLoggedIn()) {
-					model['currentUser'] = User.get(springSecurityService.principal.id)
+				if (model) {
+					if (springSecurityService.isLoggedIn()) {
+						model['currentUser'] = User.get(springSecurityService.principal.id)
+					}
+				} else {
+					model = [currentUser: (springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null)]
 				}
             }
-        }
-		currentUser(uri: CH.config.login.success.defaultUrl) {
-			before = { ->
-            	if (springSecurityService.isLoggedIn() && !session['currentUser']) {
-					session['currentUser'] = User.get(springSecurityService.principal.id)
-				}
-			}
         }
     } 
 }

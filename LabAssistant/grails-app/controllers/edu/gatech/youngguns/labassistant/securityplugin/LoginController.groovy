@@ -43,7 +43,7 @@ class LoginController {
 	@Secured(['IS_AUTHENTICATED_ANONYMOUSLY'])
 	def index = {
 		if (springSecurityService.isLoggedIn()) {
-			redirect uri: CH.config.login.success.defaultUrl
+			redirect(controller: 'home', action: 'index')
 		}
 		else {
 			redirect action: auth, params: params
@@ -60,7 +60,7 @@ class LoginController {
 		def config = SpringSecurityUtils.securityConfig
 
 		if (springSecurityService.isLoggedIn()) {
-			redirect uri: CH.config.login.success.defaultUrl
+			redirect(controller: 'home', action: 'index')
 			return
 		}
 
