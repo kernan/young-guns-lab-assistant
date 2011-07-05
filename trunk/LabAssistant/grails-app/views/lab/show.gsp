@@ -5,12 +5,37 @@
 <body>
 	<h2><g:message code='labs.reports.heading' args='${[lab.name]}' /></h2>
 	<br />
-	<g:each in='${lab.teams}' var='team'>
-		<h4>${team.name}</h4>
-		<ul>
-		<g:each in='${team.students}' var='student'>
-			<li>${student.name}</li>
+	<!-- display list of students -->
+	<g:ifIndividualLab lab="${lab}">
+		<g:each in='${lab.teams}' var='team'>
+			<!-- <h4>${team.name}</h4> -->
+			<ul>
+			<g:each in='${team.students}' var='student'>
+				<li>${student.name}</li>
+			</g:each>
+			</ul>
 		</g:each>
-		</ul>
-	</g:each>
+	</g:ifIndividualLab>
+	<!-- display list of random teams -->
+	<g:ifRandomLab lab="${lab}">
+		<g:each in='${lab.teams}' var='team'>
+			<h4>${team.name}</h4>
+			<ul>
+			<g:each in='${team.students}' var='student'>
+				<li>${student.name}</li>
+			</g:each>
+			</ul>
+		</g:each>
+	</g:ifRandomLab>
+	<!-- display team list with join and create options -->
+	<g:ifSelfSelectLab lab="${lab}">
+		<g:each in='${lab.teams}' var='team'>
+			<h4>${team.name}</h4>
+			<ul>
+			<g:each in='${team.students}' var='student'>
+				<li>${student.name}</li>
+			</g:each>
+			</ul>
+		</g:each>
+	</g:ifSelfSelectLab>
 </body>

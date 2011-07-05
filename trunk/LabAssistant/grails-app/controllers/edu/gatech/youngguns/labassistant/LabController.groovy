@@ -88,9 +88,6 @@ class LabController {
 		else if(type == Lab.TeamType.INDIVIDUAL) {
 			labService.assignIndividualTeams(lab)
 		}
-		else if(type == Lab.TeamType.SELF_SELECT) {
-			//TODO setup self select system
-		}
 		redirect(action:'list')
 	}
 }
