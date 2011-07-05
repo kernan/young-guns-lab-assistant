@@ -67,15 +67,27 @@ class LabController {
 		String name = params['name']
 		Date startDate = params['startDate']
 		Date endDate = params['endDate']
-		int teamSize = params['teamSize'] as int
 		String typeString = params['type']
 		Lab.TeamType type = (typeString == "Individual" ? Lab.TeamType.INDIVIDUAL : typeString == "Random Select" ? Lab.TeamType.RANDOM : Lab.TeamType.SELF_SELECT)
+		int teamSize
+		if(type == Lab.TeamType.INDIVIDUAL) {
+			teamSize = 1
+		}
+		else {
+			teamSize = params['teamSize'] as int
+		}
 		//String description = params['description']
 		User instructor
 		def lab = new Lab(name: name, startDate: startDate, endDate: endDate, course: course, type: type, maxTeamSize: teamSize/*, description: description*/)
 		lab.save(failOnError: true)
 		if (type == Lab.TeamType.RANDOM) {
 			labService.assignRandomTeams(lab)	
+		}
+		else if(type == Lab.TeamType.INDIVIDUAL) {
+			labService.assignIndividualTeams(lab)
+		}
+		else if(type == Lab.TeamType.SELF_SELECT) {
+			//TODO setup self select system
 		}
 		redirect(action:'list')
 	}

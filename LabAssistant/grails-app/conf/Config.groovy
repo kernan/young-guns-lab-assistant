@@ -58,9 +58,11 @@ environments {
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
+		grails.gorm.failOnError=true
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
+		grails.gorm.failOnError=true
     }
 
 }
@@ -96,3 +98,8 @@ grails.plugins.springsecurity.authority.className = 'edu.gatech.youngguns.labass
 
 // Default landing page after login
 login.success.defaultUrl = '/home/index'
+
+import grails.plugins.springsecurity.SecurityConfigType
+
+grails.plugins.springsecurity.rejectIfNoRule = false
+grails.plugins.springsecurity.securityConfigType = SecurityConfigType.Annotation

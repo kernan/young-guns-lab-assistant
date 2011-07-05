@@ -2,10 +2,19 @@ package edu.gatech.youngguns.labassistant
 
 import org.codehaus.groovy.grails.commons.ConfigurationHolder as CH
 
+/**
+ * 
+ * @author William Dye
+ *
+ */
+
 class UserFilters {
 
 	def springSecurityService
 	
+	/**
+	 * 
+	 */
     def filters = {
         all(controller:'*', action:'*') {
             after = { model ->

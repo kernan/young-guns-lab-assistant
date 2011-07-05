@@ -17,12 +17,12 @@ class Lab {
 	TeamType type
 	Date startDate
 	Date endDate
-	
-	static belongsTo = [course: Course]
 	static hasMany = [teams: Team]
+	static belongsTo = [course: Course]
 
 	static constraints = {
 		name(blank: false, unique: true)
+		course(nullable: true)
 	}
 	
 	static mapping = {
