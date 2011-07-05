@@ -37,8 +37,8 @@ class LabTagLib {
 	def ifSelfSelectLab = { attrs, body ->
 		def lab = attrs["lab"]
 		if(lab.type == Lab.TeamType.SELF_SELECT) {
-			out << "Self-Select"
-			//out << body()
+			//out << "Self-Select"
+			out << body()
 		}
 	}
 }

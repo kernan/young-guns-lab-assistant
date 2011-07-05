@@ -15,7 +15,7 @@ class Team {
 	static hasMany = [students: User]
 
     static constraints = {
-		name(blank: false)
+		name(blank: false, unique: true)
     }
 	
 	static mapping = {

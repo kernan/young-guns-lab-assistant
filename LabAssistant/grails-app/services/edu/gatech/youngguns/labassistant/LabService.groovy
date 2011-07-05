@@ -30,6 +30,11 @@ class LabService {
 		}
     }
 	
+	/**
+	 * 
+	 * @param lab
+	 * @param student
+	 */
 	def addToRandomTeam (Lab lab, User student) {
 		if (!lab || !student) { return }
 		for (team in lab.teams) {
@@ -59,6 +64,11 @@ class LabService {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param lab
+	 * @param student
+	 */
 	def addIndividualTeam (Lab lab, User student) {
 		if (!lab || !student) { return }
 		Team t = new Team(name: "Team ${lab.teams?.size() + 1 ?: 1}", lab: lab, students: [student])
