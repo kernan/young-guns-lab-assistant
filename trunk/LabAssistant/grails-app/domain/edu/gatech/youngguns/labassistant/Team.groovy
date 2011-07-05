@@ -25,5 +25,9 @@ class Team {
 	public int capacity () {
 		return this.lab.maxTeamSize
 	}
+	
+	public int size () {
+		return this.students?.size() ?: 0
+	}
 }
 

@@ -2,7 +2,7 @@ package edu.gatech.youngguns.labassistant
 
 /**
  * 
- * @author Kyle Petrovich
+ * @author William Dye
  *
  * provides services that automatically assign students to teams
  */
@@ -30,6 +30,19 @@ class LabService {
 		}
     }
 	
+	def addToRandomTeam (Lab lab, User student) {
+		if (!lab || !student) { return }
+		for (team in lab.teams) {
+			if (team.size() < lab.maxTeamSize) {
+				team.addToStudents(student)
+				return
+			}
+		}
+		// if all the teams are full...
+		Team t = new Team(name: "Team ${lab.teams.size() + 1}", lab: lab, students: [student])
+		t.save(failOnError: true)
+	}
+	
 	/**
 	 * creates teams of students with 1 person per team
 	 * @param lab the lab to add individual teams to
@@ -44,5 +57,11 @@ class LabService {
 				t.save()
 			}
 		}
+	}
+	
+	def addIndividualTeam (Lab lab, User student) {
+		if (!lab || !student) { return }
+		Team t = new Team(name: "Team ${lab.teams?.size() + 1 ?: 1}", lab: lab, students: [student])
+		t.save(failOnError: true)
 	}
 }
