@@ -11,6 +11,7 @@
                 <td><b><g:message code="labs.table.heading.name" /></b></td>
                 <td><b><g:message code="labs.table.heading.startDate" /></b>
                 <td><b><g:message code="labs.table.heading.endDate" /></b>
+                <td><b><g:message code="labs.table.heading.courseName" /></b>
             </tr>
             <g:each in="${labList}" var="lab">
             <tr>
@@ -18,6 +19,7 @@
                 <td><g:link controller="lab" action="show" params="[lab: labId]">${lab.name}</g:link></td>
                 <td>${lab.startDate}</td>
                 <td>${lab.endDate}</td>
+                <td>${lab.course.getName()}</td>
             </tr>
         </g:each>
         </table>

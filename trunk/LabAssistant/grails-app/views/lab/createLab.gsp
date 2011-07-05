@@ -15,7 +15,7 @@
 				<tr><td><label for='startDate'>Start Date</label><g:datePicker name="startDate" precision="minute"
 					years="${(1900 + (new Date().year))..(1901 + (new Date().year))}"/>
 				</td></tr>
-				<tr><td><label for='endDate'>End Date</label><g:datePicker name="endDate" precision="minute"
+				<tr><td><label for="endDate">End Date</label><g:datePicker name="endDate" precision="minute"
 					years="${(1900 + (new Date().year))..(1901 + (new Date().year))}"/>
 				</td></tr>
 				<tr><td><g:actionSubmit action="save" value="${message(code: 'labs.create.submit')}" /></td></tr>

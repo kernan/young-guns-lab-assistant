@@ -17,7 +17,7 @@
 						<p>Welcome! Please <g:link controller="login" action="auth">sign in</g:link> to use the Lab Assistant.</p>
 					</sec:ifNotLoggedIn>
 					<sec:ifLoggedIn>
-						<p>Welcome, ${currentUser.name}! (<g:link controller="logout">sign out</g:link>)</p>
+						<p>Welcome, ! (<g:link controller="logout">sign out</g:link>)</p>
 					</sec:ifLoggedIn>
 				</div>
 				<div id="logo">
