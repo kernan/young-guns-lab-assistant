@@ -9,6 +9,8 @@ import grails.plugins.springsecurity.Secured
  */
 
 class CourseController {
+	
+	def labService
 
 	 /**
 	 * Dependency injection for the springSecurityService.
@@ -79,7 +81,16 @@ class CourseController {
 	}
 	@Secured(["IS_AUTHENTICATED_REMEMBERED", "ROLE_STUDENT"])
 	def join = {
-		StudentCourse.create(springSecurityService.currentUser, Course.get(params['course']))
+		Course course = Course.get(params['course'])
+		if (!course) { redirect(view: 'list') }
+		StudentCourse.create(springSecurityService.currentUser, course)
+		for (lab in course.labs) {
+			if (lab.type == Lab.TeamType.RANDOM) {
+				labService.addToRandomTeam(lab, springSecurityService.currentUser)
+			} else if (lab.type == Lab.TeamType.INDIVIDUAL) {
+				labService.addIndividualTeam(lab, springSecurityService.currentUser)
+			}
+		}
 		render view: 'success'
 	}
 	
