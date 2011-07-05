@@ -48,9 +48,11 @@ class LabController {
    	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_INSTRUCTOR"])
 	def create = {
 		if (Course.count() == 0) {
-			render(controller: 'course', action: 'create')
+			redirect(controller: 'course', action: 'create')
 		}
-		render(view: 'create', model: [courseList: Course.list()])
+		else{
+			render(view: 'create', model: [courseList: Course.list()])
+		}
 	}
 	
 	def createLab = {
