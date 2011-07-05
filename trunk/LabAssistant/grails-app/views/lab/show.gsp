@@ -30,12 +30,14 @@
 	<!-- display team list with join and create options -->
 	<g:ifSelfSelectLab lab="${lab}">
 		<g:each in='${lab.teams}' var='team'>
-			<h4>${team.name}</h4>
+			<h4>${team.name} </h4>
 			<ul>
 			<g:each in='${team.students}' var='student'>
 				<li>${student.name}</li>
 			</g:each>
 			</ul>
 		</g:each>
+		<p><g:link controller="team" action="join"><g:message code="cp.student.teams.join" /></g:link></p>
+		<p><g:link controller="team" action="create"><g:message code="cp.student.teams.add" /></g:link></p>
 	</g:ifSelfSelectLab>
 </body>

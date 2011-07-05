@@ -34,6 +34,11 @@ class LabController {
 		render(view: 'list', model: [labList: Lab.list(), labTotal: Lab.count()])
 	}
 	
+	/**
+	 * shows all teams associated with a certain lab
+	 * @Secured logged in remembered, roles: all
+	 */
+	@Secured(["IS_AUTHENTICATED_REMEMBERED"])
 	def show = {
 		if (!params['lab']) {
 			redirect(action: 'list')
@@ -55,6 +60,11 @@ class LabController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @Secured logged in fully, roles: Instructor
+	 */
+	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_INSTRUCTOR"])
 	def createLab = {
 		render(view: 'createLab', model: [course: Course.findById(params['course'])])
 	}
