@@ -49,6 +49,9 @@ class HomeController {
 			//activate all student views
 			Set courses = StudentCourse.findAllByStudent(springSecurityService.currentUser)
 			int courseCount = courses.size()
+			if (courses==null){
+				courses=0;
+			}
 			render(view: 'student', model:[studentcourses: courses, courseCount: courseCount])
 		}
 		else {
