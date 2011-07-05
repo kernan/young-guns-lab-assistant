@@ -49,10 +49,11 @@ class HomeController {
 			//activate all student views
 			Set courses = StudentCourse.findAllByStudent(springSecurityService.currentUser)
 			int courseCount = courses.size()
+			Set labs = Lab.findAllByEndDateGreaterThan(new Date())
 			if (courses==null){
 				courses=0;
 			}
-			render(view: 'student', model:[studentcourses: courses, courseCount: courseCount])
+			render(view: 'student', model:[studentcourses: courses, courseCount: courseCount, studentlabs: labs])
 		}
 		else {
 			//not recognized authority
