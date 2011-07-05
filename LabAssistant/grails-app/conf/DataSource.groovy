@@ -13,8 +13,13 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            url = "jdbc:hsqldb:mem:devDB"
+			pooled = true
+			dbCreate = "update"
+			url = "jdbc:mysql://www.freesql.org:3306/YoungGunz"
+			driverClassName = "com.mysql.jdbc.Driver"
+			dialect = org.hibernate.dialect.MySQLMyISAMDialect
+			username = "YoungGun"
+			password = "y0ungGunz#"
         }
     }
     test {
