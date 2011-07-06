@@ -31,9 +31,9 @@ class LabService {
     }
 	
 	/**
-	 * 
-	 * @param lab
-	 * @param student
+	 * adds a student to a randomly generated lab
+	 * @param lab the lab to add to
+	 * @param student the student to add
 	 */
 	def addToRandomTeam (Lab lab, User student) {
 		if (!lab || !student) { return }
@@ -65,9 +65,9 @@ class LabService {
 	}
 	
 	/**
-	 * 
-	 * @param lab
-	 * @param student
+	 * add students to individual labs
+	 * @param lab the lab to add to
+	 * @param student the student to add
 	 */
 	def addIndividualTeam (Lab lab, User student) {
 		if (!lab || !student) { return }

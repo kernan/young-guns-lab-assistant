@@ -4,6 +4,7 @@ package edu.gatech.youngguns.labassistant
  * 
  * @author William Dye
  *
+ * model for a User in the system
  */
 
 class User {
@@ -31,13 +32,18 @@ class User {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * accessor for the user's roles
+	 * @return this user's authorities
 	 */
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this).collect { it.role } as Set
 	}
 	
+	/**
+	 * checks if the user has the given authority
+	 * @param role authority to check if the user has
+	 * @return true: the user has the authority, false: it does not
+	 */
 	boolean hasRole(String role) {
 		if (role && role in ["ROLE_ADMINISTRATOR", "ROLE_INSTRUCTOR", "ROLE_STUDENT"]) {
 			return this.getAuthorities().contains(Role.findByAuthority(role))
@@ -45,6 +51,11 @@ class User {
 		return false
 	}
 	
+	/**
+	 * check if the user has any of the given roles
+	 * @param roles a list of roles to check
+	 * @return true: has any of the given roles, false: does not
+	 */
 	boolean hasAnyRole(String... roles) {
 		if (roles) {
 			for (role in roles) {
@@ -60,12 +71,20 @@ class User {
 		return false
 	}
 	
+	/**
+	 * accessor for a list of all Administrators
+	 * @return list of administrators
+	 */
 	static Set adminList () {
 		Set adminList = []
 		UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMINISTRATOR")).each { admin -> adminList += admin.user }
 		return adminList
 	}
 	
+	/**
+	 * accessor for a list of all Instructors
+	 * @return list of instructors
+	 */
 	static Set instructorList () {
 		def adminList = adminList()
 		def adminIds = [], instructors = [], instructorList = []
@@ -77,6 +96,10 @@ class User {
 		return instructorList
 	}
 	
+	/**
+	 * accessor fo a list of all Students
+	 * @return list of students
+	 */
 	static Set studentList () {
 		def adminList = adminList()
 		def adminIds = [], students = [], studentList = []

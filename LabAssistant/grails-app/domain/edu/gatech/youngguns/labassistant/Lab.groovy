@@ -4,6 +4,7 @@ package edu.gatech.youngguns.labassistant
  * 
  * @author Robert Kernan
  *
+ * model for a Lab
  */
 
 class Lab {

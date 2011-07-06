@@ -4,7 +4,7 @@ package edu.gatech.youngguns.labassistant
  * 
  * @author Robert Kernan
  *
- * represents a Team of students
+ * model for a Team of Students
  */
 
 class Team {
@@ -22,12 +22,19 @@ class Team {
 		relationships(cascade: 'delete')
 	}
 	
+	/**
+	 * accessor for the team capacity
+	 * @return the max size this team can be (from it's associated lab)
+	 */
 	public int capacity () {
 		return this.lab.maxTeamSize
 	}
 	
+	/**
+	 * accessor for team size
+	 * @return the current size of the team
+	 */
 	public int size () {
 		return this.students?.size() ?: 0
 	}
 }
-

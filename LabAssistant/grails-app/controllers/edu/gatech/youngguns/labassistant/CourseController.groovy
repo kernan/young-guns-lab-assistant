@@ -5,7 +5,8 @@ import grails.plugins.springsecurity.Secured
 /**
  * 
  * @author Kyle Petrovich
- *
+ * 
+ * controller for a Course
  */
 
 class CourseController {
@@ -86,7 +87,12 @@ class CourseController {
 		course.save()
 		redirect(action:'list')
 	}
-	@Secured(["IS_AUTHENTICATED_REMEMBERED", "ROLE_STUDENT"])
+	
+	/**
+	 * Add a student to a course.
+	 * @Secured logged in fully, roles: Student
+	 */
+	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
 	def join = {
 		Course course = Course.get(params['course'])
 		if (!course) { redirect(view: 'list') }

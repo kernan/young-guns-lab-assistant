@@ -6,6 +6,7 @@ import grails.plugins.springsecurity.Secured
  * 
  * @author William Dye
  *
+ * controller for a User
  */
 
 class UserController {
@@ -87,6 +88,7 @@ class UserController {
 		if (!params['type']) {
 			render(view: 'create')
 		}
+		//create Aministrator
 		if (params['type'] == 'admin') {
 			String name = params['name']
 			String username = params['username']
@@ -98,6 +100,7 @@ class UserController {
 			UserRole.create(admin, Role.findByAuthority("ROLE_INSTRUCTOR"))
 			UserRole.create(admin, Role.findByAuthority("ROLE_STUDENT"))
 		}
+		//create Instructor
 		else if (params['type'] == 'instructor') {
 			String name = params['name']
 			String username = params['username']
@@ -107,6 +110,7 @@ class UserController {
 			instructor.save()
 			UserRole.create(instructor, Role.findByAuthority("ROLE_INSTRUCTOR"))
 		}
+		//create Student
 		else if (params['type'] == 'student') {
 			String name = params['name']
 			String username = params['username']
