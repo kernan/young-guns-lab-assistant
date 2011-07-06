@@ -4,6 +4,6 @@
         <meta name="layout" content="main" />  
   	</head>
   	<body>
-  		You've successfully joined the team. <g:link controller="team" action="list">Go Back</g:link>
+  		<p>You've successfully joined the team. <g:link controller="team" action="list"><g:message code="default.back.label" /></g:link></p>
   	</body>
 </html>

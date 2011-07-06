@@ -101,5 +101,16 @@ class CourseController {
 		render view: 'success'
 	}
 	
-	   
+	@Secured(["IS_AUTHENTICATED_REMEMBERED", "ROLE_STUDENT"])
+	def enroll = {
+		render(view: 'enroll', model: [courses: Course.list()])
+	}
+	
+	def enrollStudent = {
+		if (!params['course']) {
+			redirect(view: 'enroll')
+		}
+		StudentCourse.create(springSecurityService.currentUser, Course.get(params['course'] as long))
+		render(view: 'success')
+	}   
 }

@@ -36,7 +36,25 @@ class TeamController {
 	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
 	def create = {
 		//TODO automatically assign lab if coming from team view page
-		render(view: 'create', model: [labList: Lab.list()])
+		if (springSecurityService.currentUser.hasRole("ROLE_ADMINISTRATOR")) {
+			render(view: 'create', model: [labList: Lab.findAllByType(Lab.TeamType.SELF_SELECT)])
+		} else if (springSecurityService.currentUser.hasRole("ROLE_STUDENT")) {
+			def courseLabs = []
+			def studentCourses = StudentCourse.findAllByStudent(springSecurityService.currentUser)
+			for (course in studentCourses) {
+				course = course.course
+				courseLabs += course.labs
+			}
+			courseLabs.flatten()
+			def labList = []
+			for (lab in courseLabs) {
+				if (!springSecurityService.currentUser.isMemberOfAnyTeam(lab) && lab.type == Lab.TeamType.SELF_SELECT) {
+					labList += lab
+				}
+			}
+			//TODO render some text if the student isn't enrolled in any courses with self-select labs
+			render(view: 'create', model: [labList: labList])
+		}
 	}
 	
 	/**
@@ -59,14 +77,19 @@ class TeamController {
 		Team team = new Team(name: name, lab: lab)
 		User student
 		//add current user to team
-		/*
-		if(params['join']) {
-			//TODO only add if they aren't already on a team
-			student = springSecurityService.currentUser
-			team.addToStudents(student)
-		}*/
 		team.save()
 		redirect(action:'list')
+	}
+	
+	def chooseLab = {
+		def selfSelectlabs = Lab.findAllByType(Lab.TeamType.SELF_SELECT)
+		def labs = []
+		for (lab in selfSelectlabs) {
+			if (StudentCourse.findByStudentAndCourse(springSecurityService.currentUser, lab.course)) {
+				labs += lab
+			}
+		}
+		render(view: 'chooseLab', model: [labs: labs])
 	}
 	
 	/**
@@ -76,7 +99,12 @@ class TeamController {
 	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
 	def join = {
 		//TODO only show teams in the current lab
-		render(view: 'join', model: [teamList: Team.list()])
+		if (!params['lab']) {
+			redirect(view: 'chooseLab')
+		} else {
+			Lab lab = Lab.get(params['lab'])
+			render(view: 'join', model: [teamList: lab.teams])
+		}
 	}
 	
 	/**

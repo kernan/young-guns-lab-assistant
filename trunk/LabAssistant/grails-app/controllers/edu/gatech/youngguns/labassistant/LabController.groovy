@@ -31,7 +31,29 @@ class LabController {
 	@Secured(["IS_AUTHENTICATED_REMEMBERED"])
 	def list = {
 		//TODO only list labs within current course
-		render(view: 'list', model: [labList: Lab.list(), labTotal: Lab.count()])
+		def model = [:]
+		if (springSecurityService.currentUser.hasRole("ROLE_ADMINISTRATOR")) {
+			model['labList'] = Lab.list()
+			model['labTotal'] = Lab.count()
+			render(view: 'list', model: model)
+		} else if (springSecurityService.currentUser.hasRole("ROLE_INSTRUCTOR")) {
+			def labs = []
+			for (course in Course.findAllByInstructor(springSecurityService.currentUser)) {
+				labs += course.labs
+			}
+			model['labList'] = labs?.flatten()
+			model['labTotal'] = labs?.size() ?: 0
+			render(view: 'list', model: model)
+		} else { // student
+			def labs = []
+			for (course in StudentCourse.findAllByStudent(springSecurityService.currentUser)) {
+				course = course.course
+				labs += course.labs
+			}
+			model['labList'] = labs?.flatten()
+			model['labTotal'] = labs?.size()
+			render(view: 'list', model: model)
+		}
 	}
 	
 	/**
@@ -43,7 +65,7 @@ class LabController {
 		if (!params['lab']) {
 			redirect(action: 'list')
 		}
-		render(view: 'show', model: [lab: Lab.findById(params['lab'] as long)])
+		render(view: 'show', model: [lab: Lab.findById(params['lab'] as long), user: springSecurityService.currentUser])
 	}
 	
 	/**

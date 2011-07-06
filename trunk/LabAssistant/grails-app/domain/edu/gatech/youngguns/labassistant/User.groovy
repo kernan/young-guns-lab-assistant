@@ -87,4 +87,17 @@ class User {
 		}
 		return studentList
 	}
+	
+	public boolean isMemberOfTeam (Team team) {
+		return team.students.contains(this)
+	}
+	
+	public boolean isMemberOfAnyTeam (Lab lab) {
+		for (team in lab.teams) {
+			if (this.isMemberOfTeam(team)) {
+				return true
+			}
+		}
+		return false
+	}
 }
