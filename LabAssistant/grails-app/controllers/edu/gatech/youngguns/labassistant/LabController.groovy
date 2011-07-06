@@ -55,8 +55,15 @@ class LabController {
 		if (Course.count() == 0) {
 			redirect(controller: 'course', action: 'create')
 		}
-		else{
-			render(view: 'create', model: [courseList: Course.list()])
+		else {
+			def model = [:]
+			if (springSecurityService.currentUser.hasRole("ROLE_ADMINISTRATOR")) {
+				model['courseList'] = Course.list()
+			} else { // instructor; only show courses they teach
+				def courses = Course.findAllByInstructor(springSecurityService.currentUser)
+				model['courseList'] = courses
+			}
+			render(view: 'create', model: model)
 		}
 	}
 	

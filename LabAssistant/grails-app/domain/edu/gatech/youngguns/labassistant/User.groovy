@@ -61,27 +61,29 @@ class User {
 	}
 	
 	static Set adminList () {
-		return UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMINISTRATOR"))
+		Set adminList = []
+		UserRole.findAllByRole(Role.findByAuthority("ROLE_ADMINISTRATOR")).each { admin -> adminList += admin.user }
+		return adminList
 	}
 	
 	static Set instructorList () {
 		def adminList = adminList()
-		def adminIds = [], instructorList = []
-		adminList.each { admin -> adminIds.add(admin.user.id) }
-		def allInstructors = UserRole.findAllByRole(Role.findByAuthority("ROLE_INSTRUCTOR"))
-		allInstructors.each { instructor ->
-			if (!adminIds.contains(instructor.user.id)) { instructorList += instructor }
+		def adminIds = [], instructors = [], instructorList = []
+		adminList.each { admin -> adminIds.add(admin.id) }
+		UserRole.findAllByRole(Role.findByAuthority("ROLE_INSTRUCTOR")).each { instructor -> instructors += instructor.user }
+		instructors.each { instructor ->
+			if (!adminIds.contains(instructor.id)) { instructorList += instructor }
 		}
 		return instructorList
 	}
 	
 	static Set studentList () {
 		def adminList = adminList()
-		def adminIds = [], studentList = []
-		adminList.each { admin -> adminIds.add(admin.user.id) }
-		def allStudents = UserRole.findAllByRole(Role.findByAuthority("ROLE_STUDENT"))
-		allStudents.each { student ->
-			if (!adminIds.contains(student.user.id)) { studentList += student }
+		def adminIds = [], students = [], studentList = []
+		adminList.each { admin -> adminIds.add(admin.id) }
+		UserRole.findAllByRole(Role.findByAuthority("ROLE_STUDENT")).each { student -> students += student.user }
+		students.each { student ->
+			if (!adminIds.contains(student.id)) { studentList += student }
 		}
 		return studentList
 	}
