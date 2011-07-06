@@ -6,6 +6,7 @@ import grails.plugins.springsecurity.Secured
  * 
  * @author William Dye
  *
+ * controller for a Team
  */
 class TeamController {
 	

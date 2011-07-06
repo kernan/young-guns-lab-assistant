@@ -6,13 +6,16 @@ import grails.plugins.springsecurity.Secured
  * 
  * @author Robert Kernan
  *
- * controller for Lab
- *   creates, lists, and saves Lab objects
+ * controller for a Lab
  */
 
 class LabController {
 	
+	/**
+	 * Spring Security dependency injection
+	 */
 	def springSecurityService
+	
 	def labService
 	
    /**
@@ -90,7 +93,7 @@ class LabController {
 	}
 	
 	/**
-	 * 
+	 * create a new lab in the current course
 	 * @Secured logged in fully, roles: Instructor
 	 */
 	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_INSTRUCTOR"])

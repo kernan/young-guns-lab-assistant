@@ -4,6 +4,7 @@ package edu.gatech.youngguns.labassistant
  * 
  * @author William Dye
  *
+ * model for a User's role
  */
 
 class Role {

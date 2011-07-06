@@ -10,6 +10,7 @@ import grails.plugins.springsecurity.Secured
  *
  * @author William Dye
  *
+ * controller for the home screen
  */
 
 class HomeController {
