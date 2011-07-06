@@ -15,7 +15,7 @@ class Team {
 	static hasMany = [students: User]
 
     static constraints = {
-		name(blank: false, unique: true)
+		name(blank: false) // if we want unique names, we'll have to redo how we're naming random and individual teams
     }
 	
 	static mapping = {

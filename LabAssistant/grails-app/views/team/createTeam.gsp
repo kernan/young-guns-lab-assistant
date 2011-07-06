@@ -9,7 +9,6 @@
     		<input type='hidden' name='lab' value='${lab.id}' />
 			<table>
 				<tr><td><label for='name'><g:message code='teams.create.name' /></label><g:textField name="name" /></td></tr>
-				<!--<tr><td><label for='join'><g:message code='teams.create.join' /></label><g:checkBox name='join' value='${true}' /></td></tr>-->
 				<tr><td><g:actionSubmit action="save" value="${message(code: 'teams.create.submit')}" /></td></tr>
 			</table>
 		</g:form>

@@ -61,8 +61,11 @@
 								<li><g:link controller="team" action="list"><g:message code="menu.teams.view" /></g:link></li>
 								</sec:ifLoggedIn>
 								<sec:ifAnyGranted roles="ROLE_STUDENT,ROLE_ADMINISTRATOR">
-								<li><g:link controller="team" action="join"><g:message code="menu.teams.join" /></g:link></li>
+								<li><g:link controller="team" action="chooseLab"><g:message code="menu.teams.join" /></g:link></li>
 								</sec:ifAnyGranted>
+								<sec:ifAllGranted roles="ROLE_STUDENT">
+									<li><g:link controller="team" action="create"><g:message code="menu.teams.create" /></g:link></li>
+								</sec:ifAllGranted>
 							</ul>
 						</li>
 					</ul>

@@ -37,7 +37,11 @@
 			</g:each>
 			</ul>
 		</g:each>
-		<p><g:link controller="team" action="join"><g:message code="cp.student.teams.join" /></g:link></p>
-		<p><g:link controller="team" action="create"><g:message code="cp.student.teams.add" /></g:link></p>
+		<sec:ifAllGranted roles="ROLE_STUDENT">
+			<g:if test="${!user.isMemberOfAnyTeam(lab)}">
+				<p><g:link controller="team" action="join" params="${[lab: lab.id]}"><g:message code="cp.student.teams.join" /></g:link></p>
+			</g:if>
+			<p><g:link controller="team" action="create"><g:message code="cp.student.teams.add" /></g:link></p>
+		</sec:ifAllGranted>
 	</g:ifSelfSelectLab>
 </body>
