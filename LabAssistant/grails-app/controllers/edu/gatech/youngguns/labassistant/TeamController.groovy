@@ -59,17 +59,18 @@ class TeamController {
 		Team team = new Team(name: name, lab: lab)
 		User student
 		//add current user to team
+		/*
 		if(params['join']) {
 			//TODO only add if they aren't already on a team
 			student = springSecurityService.currentUser
 			team.addToStudents(student)
-		}
+		}*/
 		team.save()
 		redirect(action:'list')
 	}
 	
 	/**
-	 * 
+	 * select a team for students to join
 	 * @Secured logged in fully, roles: Student
 	 */
 	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
@@ -78,6 +79,11 @@ class TeamController {
 		render(view: 'join', model: [teamList: Team.list()])
 	}
 	
+	/**
+	 * add the student to the selected team
+	 * @Secured logged in fully, roles: Student
+	 */
+	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
 	def joinTeam = {
 		boolean teamNotFull = true
 		boolean notInLab = true
