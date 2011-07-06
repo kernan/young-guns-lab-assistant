@@ -79,13 +79,35 @@ class TeamController {
 	}
 	
 	def joinTeam = {
+		boolean teamNotFull = true
+		boolean notInLab = true
 		Team team = Team.findById(params['team'] as int)
 		User student = springSecurityService.currentUser
 		//only add if they aren't already in a team
-		if(team.lab.teams.contains(student) && (team.size() < team.lab.maxTeamSize)) {
-			team.addToStudents(student)
+		if(team.size() < team.lab.maxTeamSize) {
+			for(t in team.lab.teams) {
+				for(s in t.students) {
+					if(s == student) {
+						notInLab = false
+					}
+				}
+			}
+			if(notInLab) {
+				team.addToStudents(student)
+			}
 		}
-		//TODO redirect to error screen else
-		redirect(action:'list')
+		else {
+			teamNotFull = false
+		}
+		//display proper success/error screen (in order of importance)
+		if(!notInLab) {
+			render(view: 'error', model: [message: "You're already on a team in this lab."])
+		}
+		else if(!teamNotFull) {
+			render(view:'error', model: [message: "That team is full."])
+		}
+		else {
+			render(view:'success')
+		}
 	}
 }
