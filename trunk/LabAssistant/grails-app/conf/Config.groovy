@@ -10,6 +10,7 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -68,27 +69,44 @@ environments {
 }
 
 // log4j configuration
+import org.apache.log4j.Level
 log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+	
+	
+	appenders {
+		console name:'console', threshold:Level.ERROR,layout:pattern(conversionPattern: '%p %d{ISO8601} %c{4} %m%n')
+		rollingFile name:"rollingFileTrace", threshold:org.apache.log4j.Level.TRACE, maxFileSize:1048576,  file:'Trace.log', layout:pattern(conversionPattern: '%p %d{ISO8601} %c{5} %m%n')
+		rollingFile name:"rollingFileDebug", threshold:org.apache.log4j.Level.DEBUG, maxFileSize:1048576,file:'Debug.log', layout:pattern(conversionPattern: '%p %d{ISO8601} %c{5} %m%n')
+		rollingFile name:"rollingFileError", threshold:org.apache.log4j.Level.ERROR, maxFileSize:1048576,file:'Error.log', layout:pattern(conversionPattern: '%p %d{ISO8601} %c{5} %m%n')
+	}
 
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
-
-    warn   'org.mortbay.log'
+	  error console, rollingFileDebug, rollingFileError, rollingFileTrace: 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+		'org.codehaus.groovy.grails.web.pages', //  GSP
+		'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+		'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+		'org.codehaus.groovy.grails.web.mapping', // URL mapping
+		'org.codehaus.groovy.grails.commons', // core / classloading
+		'org.codehaus.groovy.grails.plugins', // plugins
+		'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+		'org.springframework',
+		'org.hibernate',
+        'net.sf.ehcache.hibernate'
+	
+	  debug rollingFileDebug, rollingFileTrace: 'org.hibernate',
+		'com.britetab',
+		'BootStrap',
+		'org.apache.ddlutils'
+	
+	  trace rollingFileTrace: 'org.hibernate.SQL',
+		'org.hibernate.type'
+	
+	  warn  console,rollingFileDebug,rollingFileTrace: 'org.mortbay.log',
+		'org.hibernate.tool.hbm2ddl'
+	
+	 root {
+	  error 'console','rollingFileError','rollingFileDebug','rollingFileTrace'
+	  additivity = true
+	 }
 }
 
 // Added by the Spring Security Core plugin:
