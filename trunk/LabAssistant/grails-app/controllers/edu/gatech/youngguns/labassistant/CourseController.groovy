@@ -57,7 +57,14 @@ class CourseController {
 	 */
 	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_INSTRUCTOR"])
 	def create = {
-		render(view: 'create')
+		User currentUser = springSecurityService.currentUser
+		if (currentUser.hasRole("ROLE_ADMINISTRATOR")) {
+			def instructors = User.instructorList() + User.adminList()
+			instructors.remove(currentUser)
+			render(view: 'create', model: [instructors: instructors, userName: currentUser.name + " (me)"])
+		} else {
+			render(view: 'create')
+		}
 	}
 	
 	/**
@@ -69,8 +76,8 @@ class CourseController {
 		//TODO: Redirect to list if HTTPrequest didn't come from create?
 		String name = params['name']
 		User instructor
-		if (params['instructor']) { 
-			instructor = User.findByName(params['instructor'])
+		if (params['instructor']) {
+			instructor = (params['instructor'] == "THIS_GUY" ? springSecurityService.currentUser : User.get(params['instructor'] as long))
 		}
 		else {
 			instructor = springSecurityService.currentUser

@@ -87,9 +87,6 @@ class UserController {
 		if (!params['type']) {
 			render(view: 'create')
 		}
-		Role adminRole = Role.findByAuthority("ADMINISTRATOR")
-		Role instructorRole = Role.findByAuthority("INSTRUCTOR")
-		Role studentRole = Role.findByAuthority("STUDENT")
 		if (params['type'] == 'admin') {
 			String name = params['name']
 			String username = params['username']
@@ -97,9 +94,9 @@ class UserController {
 			def enabled = params['enabled']
 			Administrator admin = new Administrator(name: name, username: username, password: password, enabled: enabled)
 			admin.save()
-			UserRole.create(admin, adminRole)
-			UserRole.create(admin, instructorRole)
-			UserRole.create(admin, studentRole)
+			UserRole.create(admin, Role.findByAuthority("ROLE_ADMINISTRATOR"))
+			UserRole.create(admin, Role.findByAuthority("ROLE_INSTRUCTOR"))
+			UserRole.create(admin, Role.findByAuthority("ROLE_STUDENT"))
 		}
 		else if (params['type'] == 'instructor') {
 			String name = params['name']
