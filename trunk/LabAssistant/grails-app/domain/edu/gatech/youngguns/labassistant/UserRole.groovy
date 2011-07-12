@@ -13,6 +13,22 @@ class UserRole implements Serializable {
 
 	User user
 	Role role
+	
+	static mapping = {
+		id composite: ['role', 'user']
+		version false
+	}
+	
+	/**
+	 * build hash code for this user role relationship
+	 * @return the hash code for this user role relationship
+	 */
+	int hashCode() {
+		def builder = new HashCodeBuilder()
+		if (user) builder.append(user.id)
+		if (role) builder.append(role.id)
+		builder.toHashCode()
+	}
 
 	/**
 	 * checks if two instances of UserRole are equal
@@ -25,13 +41,6 @@ class UserRole implements Serializable {
 
 		other.user?.id == user?.id &&
 			other.role?.id == role?.id
-	}
-
-	int hashCode() {
-		def builder = new HashCodeBuilder()
-		if (user) builder.append(user.id)
-		if (role) builder.append(role.id)
-		builder.toHashCode()
 	}
 
 	/**
@@ -80,13 +89,5 @@ class UserRole implements Serializable {
 	 */
 	static void removeAll(Role role) {
 		executeUpdate 'DELETE FROM UserRole WHERE role=:role', [role: role]
-	}
-
-	/**
-	 * 
-	 */
-	static mapping = {
-		id composite: ['role', 'user']
-		version false
 	}
 }

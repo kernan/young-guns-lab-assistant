@@ -23,6 +23,10 @@ class Course {
 		relationships(cascade: 'delete')
 	}
 	
+	/**
+	 * finds number of StudentCourse relationships associated with this course
+	 * @return the number of relationships
+	 */
 	public int studentCount ()  {
 		return StudentCourse.findAllByCourse(this).size()
 	}

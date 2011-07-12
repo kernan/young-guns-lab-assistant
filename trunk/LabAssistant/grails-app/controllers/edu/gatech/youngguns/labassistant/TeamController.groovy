@@ -31,7 +31,7 @@ class TeamController {
 	}
 	
 	/**
-	 * 
+	 * show a list of labs to create a team for
 	 * @Secured logged in fully, roles: Student
 	 */
 	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
@@ -39,7 +39,8 @@ class TeamController {
 		//TODO automatically assign lab if coming from team view page
 		if (springSecurityService.currentUser.hasRole("ROLE_ADMINISTRATOR")) {
 			render(view: 'create', model: [labList: Lab.findAllByType(Lab.TeamType.SELF_SELECT)])
-		} else if (springSecurityService.currentUser.hasRole("ROLE_STUDENT")) {
+		}
+		else if (springSecurityService.currentUser.hasRole("ROLE_STUDENT")) {
 			def courseLabs = []
 			def studentCourses = StudentCourse.findAllByStudent(springSecurityService.currentUser)
 			for (course in studentCourses) {
@@ -59,7 +60,7 @@ class TeamController {
 	}
 	
 	/**
-	*
+	* render create team page
 	* @Secured logged in fully, roles: Student
 	*/
    @Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
@@ -68,7 +69,7 @@ class TeamController {
    }
 	
 	/**
-	 * 
+	 * create and save a new team to the database
 	 * @Secured logged in fully, roles: Student
 	 */
 	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
@@ -82,6 +83,11 @@ class TeamController {
 		redirect(action:'list')
 	}
 	
+	/**
+	 * 
+	 * @Secured logged in fully, roles: Student
+	 */
+	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
 	def chooseLab = {
 		def selfSelectlabs = Lab.findAllByType(Lab.TeamType.SELF_SELECT)
 		def labs = []

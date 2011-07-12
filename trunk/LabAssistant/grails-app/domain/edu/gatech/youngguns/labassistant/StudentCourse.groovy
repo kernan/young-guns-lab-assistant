@@ -14,6 +14,22 @@ class StudentCourse implements Serializable {
 	User student
 	Course course
 	
+	static mapping = {
+		id composite: ['student', 'course']
+		version false
+	}
+	
+	/**
+	 * build hash code for this student course relationship
+	 * @return the hash code for this student course relationship
+	 */
+	int hashCode() {
+		def builder = new HashCodeBuilder()
+		if (student) builder.append(student.id)
+		if (course) builder.append(course.id)
+		builder.toHashCode()
+	}
+	
 	/**
 	 * checks equality between StudentCourse objects
 	 * @return true: they are equal, false: they are not
@@ -25,13 +41,6 @@ class StudentCourse implements Serializable {
 
 	   other.student?.id == student?.id &&
 		   other.course?.id == course?.id
-   }
-
-   int hashCode() {
-	   def builder = new HashCodeBuilder()
-	   if (student) builder.append(student.id)
-	   if (course) builder.append(course.id)
-	   builder.toHashCode()
    }
 
    /**
@@ -80,10 +89,5 @@ class StudentCourse implements Serializable {
 	*/
    static void removeAll(Course course) {
 	   executeUpdate 'DELETE FROM StudentCourse WHERE course=:course', [course: course]
-   }
-   
-   static mapping = {
-	   id composite: ['student', 'course']
-	   version false
    }
 }

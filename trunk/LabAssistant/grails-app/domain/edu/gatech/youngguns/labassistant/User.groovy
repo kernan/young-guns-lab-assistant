@@ -97,7 +97,7 @@ class User {
 	}
 	
 	/**
-	 * accessor fo a list of all Students
+	 * gives a list of all Students
 	 * @return list of students
 	 */
 	static Set studentList () {
@@ -111,10 +111,20 @@ class User {
 		return studentList
 	}
 	
+	/**
+	 * checks if this User is a member of a given team
+	 * @param team the team to check membership of
+	 * @return true: this user is a member, false: this user is not
+	 */
 	public boolean isMemberOfTeam (Team team) {
 		return team.students.contains(this)
 	}
 	
+	/**
+	 * checks if this User is a member of any team in a given lab
+	 * @param lab the lab to check all team membership in
+	 * @return true: this user is a member of a team in this lab, false: this user is not 
+	 */
 	public boolean isMemberOfAnyTeam (Lab lab) {
 		for (team in lab.teams) {
 			if (this.isMemberOfTeam(team)) {

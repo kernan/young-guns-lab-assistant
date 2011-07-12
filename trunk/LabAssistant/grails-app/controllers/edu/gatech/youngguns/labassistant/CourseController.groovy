@@ -107,11 +107,20 @@ class CourseController {
 		render view: 'success'
 	}
 	
-	@Secured(["IS_AUTHENTICATED_REMEMBERED", "ROLE_STUDENT"])
+	/**
+	 * Show list of courses the student can enroll in.
+	 * @Secured logged in fully, roles: Student
+	 */
+	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
 	def enroll = {
 		render(view: 'enroll', model: [courses: Course.list()])
 	}
 	
+	/**
+	 * Enroll the student in a course.
+	 * @Secured logged in fully, roles: Student
+	 */
+	@Secured(["IS_AUTHENTICATED_FULLY", "ROLE_STUDENT"])
 	def enrollStudent = {
 		if (!params['course']) {
 			redirect(view: 'enroll')

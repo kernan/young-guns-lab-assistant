@@ -41,7 +41,9 @@ class HomeController {
 			render(view: 'admin', model:[activeUsers:activeUsers, lockedUsers: lockedUsers, admins: admins,
 				instructors: instructors, students: students, courses: courses, adminCourses: adminCourses,
 				adminCourseCount: adminCourseCount])
-		} else if (currentUserRoles.contains(Role.findByAuthority("ROLE_INSTRUCTOR"))) {
+		}
+		else if (currentUserRoles.contains(Role.findByAuthority("ROLE_INSTRUCTOR"))) {
+			//activate all instructor views
 			Set courses = Course.findAllByInstructor(springSecurityService.currentUser)
 			int courseCount = courses?.size() ?: 0
 			render(view: 'instructor', model: [courses: courses, courseCount: courseCount])
@@ -51,7 +53,7 @@ class HomeController {
 			Set courses = StudentCourse.findAllByStudent(springSecurityService.currentUser)
 			int courseCount = courses.size()
 			Set labs = Lab.findAllByEndDateGreaterThan(new Date())
-			if (courses==null){
+			if (courses==null) {
 				courses=0;
 			}
 			render(view: 'student', model:[studentcourses: courses, courseCount: courseCount, studentlabs: labs])
