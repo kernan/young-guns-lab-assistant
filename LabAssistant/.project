@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>LabAssistant Redesign</name>
+	<name>LabAssistant</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -26,7 +26,7 @@
 		<link>
 			<name>.link_to_grails_plugins</name>
 			<type>2</type>
-			<location>C:/Users/Robert Kernan/.grails/1.3.7/projects/LabAssistant Redesign/plugins</location>
+			<location>C:/Users/Robert Kernan/.grails/1.3.7/projects/LabAssistant/plugins</location>
 		</link>
 	</linkedResources>
 </projectDescription>
