@@ -1,0 +1,19 @@
+Things It Would Be Nice To Do/Have
+----------------------------------
+
+* user lock out after three unsuccessful attempts
+* separate fields for start date, start time, end date, and end time in lab domain class
+* add users to all labs of a course when they enroll in a new course
+* assign users to a random team when they enroll in a course with a random lab
+* assign users to an individual team when they enroll in a course with an individual lab
+* the ability for admins (and instructors?) to enroll students in a course
+* the ability for admins to create courses for other admins/instructors to teach
+* the ability to enroll students in a course when the course is created
+* the ability to enroll students in courses when the student is created
+* a "show.gsp" for users, courses, labs, and teams
+* filter options for the "list" views (filter courses by instructor, labs by team type, users by role, etc.)
+* a footer
+* the ability to suspend (disable) accounts
+* a lab report for all labs in a course (?)
+* an admin's lab report for all courses (?)
+* the ability for admins to pose as other users (switching via SS plugin?)
