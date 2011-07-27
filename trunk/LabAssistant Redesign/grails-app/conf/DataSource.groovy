@@ -13,10 +13,9 @@ hibernate {
 environments {
     development {
         dataSource {
-            /*
             dbCreate = "update"
-            url = "jdbc:hsqldb:mem:testDb"
-            */
+            url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+            /*
 			pooled = true
 			dbCreate = "update"
 			url = "jdbc:mysql://www.freesql.org:3306/YoungGunz"
@@ -24,6 +23,7 @@ environments {
 			dialect = org.hibernate.dialect.MySQLMyISAMDialect
 			username = "YoungGun"
 			password = "y0ungGunz#"
+			*/
 			
         }
     }

@@ -6,12 +6,12 @@
 
 package edu.gatech.youngguns.labassistant
 
-class Course {
+class Sport {
 
     String name
 
-    static belongsTo = [instructor: User]
-    static hasMany = [labs: Lab]
+    static belongsTo = [employee: Employee]
+    static hasMany = [leagues: League]
 
     static constraints = {
         name(blank: false, unique: true)
@@ -26,7 +26,7 @@ class Course {
      * finds number of StudentCourse relationships associated with this course
      * @return the number of relationships
      */
-    public int studentCount ()  {
-        return StudentCourse.findAllByCourse(this).size()
+    public int playerCount ()  {
+        return PlayerSport.findAllBySport(this).size()
     }
 }

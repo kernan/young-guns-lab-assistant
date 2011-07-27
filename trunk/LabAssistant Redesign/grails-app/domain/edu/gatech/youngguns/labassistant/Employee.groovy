@@ -6,9 +6,9 @@
 
 package edu.gatech.youngguns.labassistant
 
-class Instructor extends User {
+class Employee extends User {
 
-    static hasMany = [courses: Course]
+    static hasMany = [sports: Sport]
 
     static constraints = {
     }

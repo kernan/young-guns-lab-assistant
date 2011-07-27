@@ -46,8 +46,8 @@ class User {
     boolean hasRole(String role) {
         if (role && role in [
             "ROLE_ADMINISTRATOR",
-            "ROLE_INSTRUCTOR",
-            "ROLE_STUDENT"
+            "ROLE_EMPLOYEE",
+            "ROLE_PLAYER"
         ]) {
             return this.getAuthorities().contains(Role.findByAuthority(role))
         }
@@ -62,7 +62,7 @@ class User {
     boolean hasAnyRole(String... roles) {
         if (roles) {
             for (role in roles) {
-                if (!(role == "ROLE_ADMINISTRATOR" || role == "ROLE_INSTRUCTOR" || role == "ROLE_STUDENT")) {
+                if (!(role == "ROLE_ADMINISTRATOR" || role == "ROLE_EMPLOYEE" || role == "ROLE_PLAYER")) {
                     return false
                 }
                 if (this.getAuthorities().contains(Role.findByAuthority(role))) {
@@ -88,34 +88,34 @@ class User {
      * accessor for a list of all Instructors
      * @return list of instructors
      */
-    static Set instructorList () {
+    static Set employeeList () {
         def adminList = adminList()
-        def adminIds = [], instructors = [], instructorList = []
+        def adminIds = [], employees = [], employeeList = []
         adminList.each { admin -> adminIds.add(admin.id) }
-        UserRole.findAllByRole(Role.findByAuthority("ROLE_INSTRUCTOR")).each { instructor -> instructors += instructor.user }
-        instructors.each { instructor ->
-            if (!adminIds.contains(instructor.id)) {
-                instructorList += instructor
+        UserRole.findAllByRole(Role.findByAuthority("ROLE_EMPLOYEE")).each { employee -> employees += employee.user }
+        employees.each { employee ->
+            if (!adminIds.contains(employee.id)) {
+                employeeList += employee
             }
         }
-        return instructorList
+        return employeeList
     }
 
     /**
      * gives a list of all Students
      * @return list of students
      */
-    static Set studentList () {
+    static Set playerList () {
         def adminList = adminList()
-        def adminIds = [], students = [], studentList = []
+        def adminIds = [], players = [], playerList = []
         adminList.each { admin -> adminIds.add(admin.id) }
-        UserRole.findAllByRole(Role.findByAuthority("ROLE_STUDENT")).each { student -> students += student.user }
-        students.each { student ->
-            if (!adminIds.contains(student.id)) {
-                studentList += student
+        UserRole.findAllByRole(Role.findByAuthority("ROLE_PLAYER")).each { player -> players += player.user }
+        players.each { player ->
+            if (!adminIds.contains(player.id)) {
+                playerList += player
             }
         }
-        return studentList
+        return playerList
     }
 
     /**
@@ -124,7 +124,7 @@ class User {
      * @return true: this user is a member, false: this user is not
      */
     public boolean isMemberOfTeam (Team team) {
-        return team.students.contains(this)
+        return team.players.contains(this)
     }
 
     /**
@@ -132,8 +132,8 @@ class User {
      * @param lab the lab to check all team membership in
      * @return true: this user is a member of a team in this lab, false: this user is not 
      */
-    public boolean isMemberOfAnyTeam (Lab lab) {
-        for (team in lab.teams) {
+    public boolean isMemberOfAnyTeam (League league) {
+        for (team in league.teams) {
             if (this.isMemberOfTeam(team)) {
                 return true
             }
