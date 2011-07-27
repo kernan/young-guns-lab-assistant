@@ -2,7 +2,7 @@ package edu.gatech.youngguns.labassistant
 
 import grails.test.*
 
-class TeamTests extends GrailsUnitTestCase {
+class RoleTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
     }

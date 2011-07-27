@@ -10,8 +10,9 @@ class Team {
 
     String name
 
-    static belongsTo = [lab: Lab]
-    static hasMany = [students: User]
+    static belongsTo = [league: League]
+    static hasMany = [player: User]
+    Player captain
 
     static constraints = {
         name(blank: false) // if we want unique names, we'll have to redo how we're naming random and individual teams
@@ -34,6 +35,6 @@ class Team {
      * @return the current size of the team
      */
     public int size () {
-        return this.students?.size() ?: 0
+        return this.players?.size() ?: 0
     }
 }

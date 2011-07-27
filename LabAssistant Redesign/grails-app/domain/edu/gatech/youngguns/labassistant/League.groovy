@@ -6,19 +6,14 @@
 
 package edu.gatech.youngguns.labassistant
 
-class Lab {
-
-    enum TeamType {
-        RANDOM, SELF_SELECT, INDIVIDUAL
-    }
+class League {
 
     String name
     int maxTeamSize
-    TeamType type
     Date startDate
     Date endDate
     static hasMany = [teams: Team]
-    static belongsTo = [course: Course]
+    static belongsTo = [sport: Sport]
 
     static constraints = {
         name(blank: false, unique: true)

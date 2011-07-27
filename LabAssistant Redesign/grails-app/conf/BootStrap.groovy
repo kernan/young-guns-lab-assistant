@@ -9,8 +9,8 @@ class BootStrap {
     def init = { servletContext ->
 		
 		// set up security roles if they don't already exist
-		Role studentRole = Role.findByAuthority("ROLE_STUDENT") ?: new Role(authority: "ROLE_STUDENT").save(failOnError: true)
-		Role instructorRole = Role.findByAuthority("ROLE_INSTRUCTOR") ?: new Role(authority: "ROLE_INSTRUCTOR").save(failOnError: true)
+		Role playerRole = Role.findByAuthority("ROLE_PLAYER") ?: new Role(authority: "ROLE_PLAYER").save(failOnError: true)
+		Role employeeRole = Role.findByAuthority("ROLE_EMPLOYEE") ?: new Role(authority: "ROLE_EMPLOYEE").save(failOnError: true)
 		Role adminRole = Role.findByAuthority("ROLE_ADMINISTRATOR") ?: new Role(authority: "ROLE_ADMINISTRATOR").save(failOnError: true)
 		
 		// set up a default admin user if none exists already
@@ -22,8 +22,8 @@ class BootStrap {
 			
 		if (!admin.authorities) {
 			UserRole.create(admin, adminRole)
-			UserRole.create(admin, instructorRole)
-			UserRole.create(admin, studentRole)
+			UserRole.create(admin, employeeRole)
+			UserRole.create(admin, playerRole)
 		}
     }
 	
