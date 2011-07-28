@@ -9,6 +9,7 @@ package edu.gatech.youngguns.labassistant
 class Sport {
 
     String name
+    int maxTeamSize
 
     static belongsTo = [employee: Employee]
     static hasMany = [leagues: League]

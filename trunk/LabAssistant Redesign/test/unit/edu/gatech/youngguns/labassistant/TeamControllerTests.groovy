@@ -11,7 +11,19 @@ class TeamControllerTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
+    //tests
+    
+    /**
+     * @author Robert Kernan
+     */
+    void testJoin() {
 
+    }
+    
+    /**
+     * @author William Dye
+     */
+    void testAssignCaptain() {
+        
     }
 }

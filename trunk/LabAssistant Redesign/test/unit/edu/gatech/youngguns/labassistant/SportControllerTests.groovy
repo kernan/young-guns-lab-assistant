@@ -11,7 +11,12 @@ class SportControllerTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
-
+    //tests
+    
+    /**
+     * @author Kyle Petrovich
+     */
+    void testAddLeague() {
+        
     }
 }
