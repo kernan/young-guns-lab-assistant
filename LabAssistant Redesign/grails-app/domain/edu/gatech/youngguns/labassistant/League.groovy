@@ -9,7 +9,6 @@ package edu.gatech.youngguns.labassistant
 class League {
 
     String name
-    int maxTeamSize
     Date startDate
     Date endDate
     static hasMany = [teams: Team]

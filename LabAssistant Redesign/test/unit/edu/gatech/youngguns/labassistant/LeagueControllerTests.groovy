@@ -10,8 +10,13 @@ class LeagueControllerTests extends GrailsUnitTestCase {
     protected void tearDown() {
         super.tearDown()
     }
-
-    void testSomething() {
-
+    
+    //tests
+    
+    /**
+     * @author Philip Smith
+     */
+    void testAddTeam() {
+        
     }
 }

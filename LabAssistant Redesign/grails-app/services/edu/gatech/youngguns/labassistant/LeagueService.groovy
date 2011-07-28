@@ -10,17 +10,38 @@ class LeagueService {
     
     static transactional = false
     
+    //error return codes
+    static final int fail_notcaptain = 1
+    static final int fail_teamfull = 2
+    static final int fail_inteam = 3
+    //success return code
+    static final int success = 0
+    
     /**
-     * 
-     * @param league
-     * @param player
-     * @return
+     * adds a player to a given team
+     * @param team the team to add given player to
+     * @param player the player to add to given team
+     * @return specific error codes on failure, success code otherwise
      */
-    def addToTeam(League league, User player) {
-        if (!league || !player) {
-            return
+    def int addToTeam(Team team, User player) {
+        //check if current user is team captain
+        def springSecurityService
+        if(team.captain != springSecurityService.currentUser) {
+            return fail_notcaptain
         }
-        Team t = new Team(name: "Team ${league.teams?.size() + 1 ?: 1}", league: league, players: [player])
-        t.save(failOnError: true)
+        //check if team is full
+        if(!(team.size() < team.capacity())) {
+            return fail_teamfull
+        }
+        //check if player is already on a team in this league
+        for(t in team.league.teams) {
+            if(t.contains(player)) {
+                return fail_inteam
+            }
+        }
+        //if passed all checks, add to team
+        team.addToPlayers(player)
+        team.save(failOnError: true)
+        return success
     }
 }
