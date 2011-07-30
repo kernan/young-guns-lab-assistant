@@ -26,17 +26,19 @@ class LeagueService {
     def int addToTeam(Team team, User player) {
         //check if current user is team captain
         def springSecurityService
-        if(team.captain != springSecurityService.currentUser) {
+        /*if(team.captain != springSecurityService.currentUser) {
             return fail_notcaptain
-        }
+        }*/
         //check if team is full
         if(!(team.size() < team.capacity())) {
             return fail_teamfull
         }
         //check if player is already on a team in this league
         for(t in team.league.teams) {
-            if(t.contains(player)) {
-                return fail_inteam
+            if(t.size() > 0) {
+                if(t.contains(player)) {
+                    return fail_inteam
+                }
             }
         }
         //if passed all checks, add to team

@@ -9,7 +9,7 @@ package edu.gatech.youngguns.labassistant
 class Team {
 
     String name
-    Player captain
+    User captain
 
     static belongsTo = [league: League]
     static hasMany = [players: User]
@@ -43,12 +43,7 @@ class Team {
      * @param player the Player to look for
      * @return true: player is in this team, false: player is not
      */
-    public boolean contains(Player player) {
-        for(p in t.players) {
-            if(p == player) {
-                return true
-            }
-        }
-        return false
+    public boolean contains(User player) {
+        return this.players.contains(player)
     }
 }
