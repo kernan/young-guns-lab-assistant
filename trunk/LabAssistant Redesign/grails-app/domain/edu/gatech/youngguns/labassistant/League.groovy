@@ -16,7 +16,7 @@ class League {
 
     static constraints = {
         name(blank: false, unique: true)
-        course(nullable: true)
+        sport(nullable: true)
     }
 
     static mapping = {

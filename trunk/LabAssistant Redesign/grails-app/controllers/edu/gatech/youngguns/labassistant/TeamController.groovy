@@ -14,12 +14,24 @@ class TeamController {
    @Secured(["IS_AUTHENTICATED_FULLY", "ROLE_PLAYER"])
    def join = {
        Team team = Team.findById(params['team'] as int)
-       User player = Player.findById(params['player'] as int)
+       User player = User.findById(params['player'] as int)
        int code = leagueService.addToTeam(team, player)
        if(code != leagueService.success) {
-           redirect(action: error, message: "generic & useless error message")
+           if(code == leagueService.fail_notcaptain) {
+               redirect(action: error, message: "current user is not captain")
+           }
+           else if(code == leagueService.fail_teamfull) {
+               redirect(action: error, message: "team is full")
+           }
+           else if(code == leagueService.fail_inteam) {
+               redirect(action: error, message: "player already in team")
+           }
+           else {
+               redirect(action: error, message: "unknown")
+           }
        }
        else {
+           team.save()
            redirect(action: success)
        }
    }
@@ -32,17 +44,25 @@ class TeamController {
    @Secured(["IS_AUTHENTICATED_FULLY", "ROLE_PLAYER"])
    def assignCaptain = {
       	Team team = Team.findById(params['team'] as int)
-	User captain = Player.findById(params['captain'] as int)
-	if (!team) {
-		redirect(action: error, message: "invalid team")
-	}
-	if (team.captain) {
-		redirect(action: error, message: "team already has a captain")
-	}
-	if (!captain)
-		redirect(action: error, message: "invalid captain")
-	}
-	team.captain = captain
-	render(view: list)
+    	User captain = Player.findById(params['captain'] as int)
+    	if (!team) {
+    		redirect(action: error, message: "invalid team")
+    	}
+    	if (team.captain) {
+    		redirect(action: error, message: "team already has a captain")
+    	}
+    	if (!captain) {
+    		redirect(action: error, message: "invalid captain")
+    	}
+    	team.captain = captain
+    	render(view: list)
+   }
+   
+   def error = {
+       redirect(action: list)
+   }
+   
+   def success = {
+       redirect(action: list)
    }
 }
